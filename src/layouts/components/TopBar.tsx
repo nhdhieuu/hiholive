@@ -22,7 +22,7 @@ export const TopBar = () => {
     ];
 
     return (
-        <div className="sticky top-0 z-50">
+        <div className="sticky top-0 z-50 border">
             <div className="flex justify-between items-center p-5 bg-background">
                 <Button variant={"ghost"} className={"text-2xl font-bold"}>
                     HIHOLIVE
@@ -34,9 +34,6 @@ export const TopBar = () => {
                     </button>
                     <Button >Log in</Button>
                     <Button>Sign Up</Button>
-                    <button className={"hover:bg-accent p-1  rounded-md"}>
-                        <UserRoundPen size={32}/>
-                    </button>
                     {/*<Avatar className={"cursor-pointer"}>
                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                         <AvatarFallback>CN</AvatarFallback>
@@ -48,26 +45,3 @@ export const TopBar = () => {
     );
 };
 
-const NavButton = ({
-                       children,
-                       className = " ",
-                       link = "/",
-                   }: {
-    children: React.ReactNode;
-    className?: string;
-    link?: string;
-}) => {
-    return (
-        <Fragment>
-            <NavigationMenuItem className={`${className} `}>
-                <Link to={link}>
-                    <NavigationMenuLink
-                        className={`${navigationMenuTriggerStyle()} text-xl py-5 bg-transparent flex items-center space-x-1 `}
-                    >
-                        {children}
-                    </NavigationMenuLink>
-                </Link>
-            </NavigationMenuItem>
-        </Fragment>
-    );
-};

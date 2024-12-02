@@ -2,15 +2,19 @@ import { Toaster } from "@/components/ui/sonner.tsx";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 import { TopBar } from "@/layouts/components/TopBar.tsx";
+import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
+import {AppSidebar} from "@/components/AppSideBar.tsx";
 
 export default function RootLayout() {
     return (
         <Fragment>
             <main className={`min-h-screen flex flex-col`}>
                 <TopBar />
-                <div className="grow bg-background min-w-screen">
-                    <Outlet />
-                </div>
+                <SidebarProvider>
+                    <AppSidebar/>
+                    <SidebarTrigger />
+                    {<Outlet />}
+                </SidebarProvider>
             </main>
             <Toaster
                 position="top-right"
