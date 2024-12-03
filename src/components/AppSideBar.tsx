@@ -66,9 +66,10 @@ const items2 = [
         viewers: "22.1K",
     },
 ];
+
 export function AppSidebar() {
     return (
-        <Sidebar>
+        <Sidebar className={"top-[82px]"}>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>

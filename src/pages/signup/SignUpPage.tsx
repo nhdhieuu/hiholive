@@ -43,7 +43,7 @@ export const SignUpPage = () => {
     }
     return (
         <Container className="h-screen  flex justify-center items-center bg-gray-200 bg-opacity-70">
-            <div className="flex flex-col p-8 bg-white w-auto min-w-[500px]">
+            <div className="flex flex-col p-8 bg-white w-auto min-w-[500px] rounded">
                 <h1 className="flex justify-center text-2xl font-bold pb-2">Tham gia HIHOLIVE ngay hôm nay</h1>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">

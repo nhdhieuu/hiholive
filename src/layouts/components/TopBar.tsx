@@ -11,7 +11,7 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu.tsx";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import CommandSearch from "@/components/CommandSearch.tsx";
 
 export const TopBar = () => {
@@ -20,6 +20,8 @@ export const TopBar = () => {
         { value: "search-emoji", label: "Search Emoji" },
         { value: "calculator", label: "Calculator" },
     ];
+    const navigate = useNavigate();
+
 
     return (
         <div className="sticky top-0 z-50 border">
@@ -32,8 +34,8 @@ export const TopBar = () => {
                     <button className={"hover:bg-accent p-1 rounded-md"}>
                         <Mail size={32}/>
                     </button>
-                    <Button >Log in</Button>
-                    <Button>Sign Up</Button>
+                    <Button onClick={() => {navigate("/login");}}>Log in</Button>
+                    <Button onClick={() => {navigate("/signup");}}>Sign Up</Button>
                     {/*<Avatar className={"cursor-pointer"}>
                         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                         <AvatarFallback>CN</AvatarFallback>

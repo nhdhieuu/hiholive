@@ -10,9 +10,9 @@ export default function RootLayout() {
         <Fragment>
             <main className={`min-h-screen flex flex-col`}>
                 <TopBar />
-                <SidebarProvider>
+                <SidebarProvider className={"min-h-[calc(100vh_-_82px)] "}>
                     <AppSidebar/>
-                    <SidebarTrigger />
+                    <SidebarTrigger/>
                     {<Outlet />}
                 </SidebarProvider>
             </main>
