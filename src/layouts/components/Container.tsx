@@ -4,8 +4,8 @@ export default function Container({
   children,
   className = " ",
 }: {
-    children: ReactNode;
-    className?: string;
+  children: ReactNode;
+  className?: string;
 }) {
-    return <div className={`h-full p-5 ${className}`}>{children}</div>;
+  return <div className={`h-full p-5 ${className}`}>{children}</div>;
 }
