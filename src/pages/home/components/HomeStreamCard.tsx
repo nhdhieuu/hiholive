@@ -5,9 +5,9 @@ import { Eye } from "lucide-react";
 
 export default function HomeStreamCard() {
   return (
-    <Card className="w-full max-w-md overflow-hidden bg-background">
+    <Card className="w-full overflow-hidden bg-background hover:bg-gray-50">
       {/* Stream Preview Section */}
-      <div className="relative aspect-video w-full overflow-hidden bg-muted">
+      <div className="relative aspect-video overflow-hidden bg-muted">
         <div className="absolute left-4 top-4 flex items-center gap-2 rounded-md bg-red-600 px-2 py-1 text-white">
           <div className="h-2 w-2 rounded-full bg-white" />
           LIVE
