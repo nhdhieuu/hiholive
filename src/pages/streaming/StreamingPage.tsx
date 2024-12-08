@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users } from "lucide-react";
 import React from "react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
+import VideoPlayer from "@/components/VideoPlayer.tsx";
 
 export default function StreamingPage() {
   return (
@@ -13,7 +14,11 @@ export default function StreamingPage() {
         {/* Stream and info section */}
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
-          <div className="w-full aspect-video bg-black"></div>
+          <div className="w-full aspect-video">
+            <VideoPlayer
+              src={"http://34.124.179.64:3000/static/test/index-1080p60.m3u8"}
+            ></VideoPlayer>
+          </div>
 
           {/* Channel info section */}
           <div className="p-4 ">
