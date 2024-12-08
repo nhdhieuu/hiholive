@@ -67,75 +67,73 @@ export default function HomePage() {
   ];
 
   return (
-    <>
-      <div className={"h-full w-full flex flex-col p-5"}>
-        {/*SECTION*/}
-        <div className={"flex flex-col gap-2"}>
-          <h1 className={"text-2xl font-bold"}>
-            Live channel we think you’ll like
-          </h1>
-          <div className={"flex gap-4 "}>
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-          </div>
-          {isShowMore && (
-            <div className={"flex gap-4"}>
-              <HomeStreamCard />
-              <HomeStreamCard />
-              <HomeStreamCard />
-              <HomeStreamCard />
-              <HomeStreamCard />
-            </div>
-          )}
-          <ShowMoreDivider
-            onShowMore={handleShowMore}
-            isShowMore={isShowMore}
-          ></ShowMoreDivider>
+    <div className={" h-full max-w-full flex flex-col p-5"}>
+      {/*SECTION*/}
+      <div className={"flex flex-col gap-2"}>
+        <h1 className={"text-2xl font-bold"}>
+          Live channel we think you’ll like
+        </h1>
+        <div className={"flex gap-4 "}>
+          <HomeStreamCard />
+          <HomeStreamCard />
+          <HomeStreamCard />
+          <HomeStreamCard />
+          <HomeStreamCard />
         </div>
-        {/*SECTION*/}
-        <div className={"flex flex-col gap-2"}>
-          <h1 className={"text-2xl font-bold"}>Just Chatting & IRL Streams</h1>
-          <div className={"flex gap-4 "}>
+        {isShowMore && (
+          <div className={"flex gap-4"}>
             <HomeStreamCard />
             <HomeStreamCard />
             <HomeStreamCard />
             <HomeStreamCard />
             <HomeStreamCard />
           </div>
-          {isShowMoreSection2 && (
-            <div className={"flex gap-4"}>
-              <HomeStreamCard />
-              <HomeStreamCard />
-              <HomeStreamCard />
-              <HomeStreamCard />
-              <HomeStreamCard />
-            </div>
-          )}
-          <ShowMoreDivider
-            onShowMore={handleShowMoreSection2}
-            isShowMore={isShowMoreSection2}
-          ></ShowMoreDivider>
+        )}
+        <ShowMoreDivider
+          onShowMore={handleShowMore}
+          isShowMore={isShowMore}
+        ></ShowMoreDivider>
+      </div>
+      {/*SECTION*/}
+      <div className={"flex flex-col gap-2"}>
+        <h1 className={"text-2xl font-bold"}>Just Chatting & IRL Streams</h1>
+        <div className={"flex gap-4 "}>
+          <HomeStreamCard />
+          <HomeStreamCard />
+          <HomeStreamCard />
+          <HomeStreamCard />
+          <HomeStreamCard />
         </div>
-        {/*SECTION*/}
-        <div className={"flex flex-col gap-2"}>
-          <h1 className={"text-2xl font-bold"}>
-            Categories we think you’ll like
-          </h1>
-          <div className={"max-w-[1600px] flex gap-4 "}>
-            {categoryMockData.map((data) => (
-              <CategoryCard
-                title={data.title}
-                viewers={data.viewers}
-                tags={data.tags}
-                imageUrl={data.imageUrl}
-              />
-            ))}
+        {isShowMoreSection2 && (
+          <div className={"flex gap-4"}>
+            <HomeStreamCard />
+            <HomeStreamCard />
+            <HomeStreamCard />
+            <HomeStreamCard />
+            <HomeStreamCard />
           </div>
+        )}
+        <ShowMoreDivider
+          onShowMore={handleShowMoreSection2}
+          isShowMore={isShowMoreSection2}
+        ></ShowMoreDivider>
+      </div>
+      {/*SECTION*/}
+      <div className={"overflow-hidden w-full flex flex-col gap-2"}>
+        <h1 className={"text-2xl font-bold"}>
+          Categories we think you’ll like
+        </h1>
+        <div className={" flex gap-4 "}>
+          {categoryMockData.map((data) => (
+            <CategoryCard
+              title={data.title}
+              viewers={data.viewers}
+              tags={data.tags}
+              imageUrl={data.imageUrl}
+            />
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

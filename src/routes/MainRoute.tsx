@@ -3,6 +3,7 @@ import RootLayout from "@/layouts/RootLayout.tsx";
 import LoginPage from "@/pages/login/LoginPage.tsx";
 import HomePage from "@/pages/home/HomePage.tsx";
 import { SignUpPage } from "@/pages/signup/SignUpPage.tsx";
+import StreamingPage from "@/pages/streaming/StreamingPage.tsx";
 
 export const MainRoute = () => {
   return (
@@ -12,9 +13,8 @@ export const MainRoute = () => {
         <Route path="signup" element={<SignUpPage />} />
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/streaming" element={<StreamingPage />} />
         </Route>
-        {/*<Route path="/error" element={<ErrorPage />} />
-                <Route path="*" element={<NotFoundPage />} />*/}
       </Routes>
     </BrowserRouter>
   );

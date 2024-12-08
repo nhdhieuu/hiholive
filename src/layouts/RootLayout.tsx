@@ -10,10 +10,12 @@ export default function RootLayout() {
     <Fragment>
       <main className={`min-h-screen flex flex-col`}>
         <TopBar />
-        <SidebarProvider className={"min-h-[calc(100vh_-_82px)] "}>
+        <SidebarProvider
+          className={" max-w-screen min-h-[calc(100vh_-_82px)] "}
+        >
           <AppSidebar />
           <SidebarTrigger />
-          {<Outlet />}
+          <div className={"flex-grow overflow-hidden"}>{<Outlet />}</div>
         </SidebarProvider>
       </main>
       <Toaster
