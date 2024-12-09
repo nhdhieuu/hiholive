@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Roobert';
+    src: url('/src/assets/fonts/RoobertSemiMonoTRIAL-Regular-BF67243fd53ad6a.otf') format('opentype');
+    font-weight: 400; /* Regular */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roobert';
+    src: url('/src/assets/fonts/RoobertTRIAL-Bold-BF67243fd540abb.otf') format('opentype');
+    font-weight: 700; /* Bold */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roobert';
+    src: url('/src/assets/fonts/RoobertSemiMonoTRIAL-Light-BF67243fd53fc7c.otf') format('opentype');
+    font-weight: 300; /* Light */
+    font-style: normal;
+}
+
+/* Thêm các định nghĩa khác nếu cần (Italic, Medium, etc.) */
