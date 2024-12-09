@@ -1,45 +1,14 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { CustomSidebarMenuItem } from "@/components/CustomeSidebarMenuItem.tsx";
 
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
 const items2 = [
   {
     avatar: "https://via.placeholder.com/150", // Đường dẫn ảnh đại diện
@@ -69,7 +38,7 @@ const items2 = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className={"top-[82px]"}>
+    <Sidebar collapsible={"icon"} className={"top-[82px]"}>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -87,6 +56,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className={"flex items-end"}>
+        <SidebarTrigger></SidebarTrigger>
+      </SidebarFooter>
     </Sidebar>
   );
 }

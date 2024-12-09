@@ -140,7 +140,9 @@ export const SignUpPage = () => {
         </Form>
         <div className="text-center pt-5">
           <span>Bạn có tài khoản? </span>
-          <Link to="/login">Đăng nhập</Link>
+          <Link className={"underline"} to="/login">
+            Đăng nhập
+          </Link>
         </div>
       </div>
     </Container>

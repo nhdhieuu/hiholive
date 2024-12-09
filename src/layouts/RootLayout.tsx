@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner.tsx";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 import { TopBar } from "@/layouts/components/TopBar.tsx";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar.tsx";
+import { SidebarProvider } from "@/components/ui/sidebar.tsx";
 import { AppSidebar } from "@/components/AppSideBar.tsx";
 
 export default function RootLayout() {
@@ -14,7 +14,6 @@ export default function RootLayout() {
           className={" max-w-screen min-h-[calc(100vh_-_82px)] "}
         >
           <AppSidebar />
-          <SidebarTrigger />
           <div className={"flex-grow overflow-hidden"}>{<Outlet />}</div>
         </SidebarProvider>
       </main>

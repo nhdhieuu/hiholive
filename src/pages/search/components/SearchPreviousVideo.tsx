@@ -20,11 +20,9 @@ export default function SearchPreviousVideo() {
       {/* Content Section */}
       <div className="flex-1 min-w-0">
         <h1 className={"font-bold line-clamp-2"}>LCK Challenger Bot lane</h1>
-        <div className="mt-1">
+        <div className="flex flex-col gap-1 mt-1">
           <p className="text-sm text-muted-foreground">Cao Hoàng</p>
-          <p className="text-sm text-muted-foreground mb-2">
-            Grand Theft Auto V
-          </p>
+          <p className="text-sm text-muted-foreground">League of legends</p>
           <div className={"flex text-sm text-muted-foreground mb-2 space-x-2"}>
             <p className="">4,1N lượt xem</p>
             <p className="">•</p>

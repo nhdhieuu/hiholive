@@ -1,15 +1,6 @@
 import { Button } from "@/components/ui/button.tsx";
-import { Mail, UserRoundPen } from "lucide-react";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu.tsx";
-import { Fragment } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import CommandSearch from "@/components/CommandSearch.tsx";
+import { Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const TopBar = () => {
   const commands = [
@@ -22,7 +13,13 @@ export const TopBar = () => {
   return (
     <div className="sticky top-0 z-50 border">
       <div className="flex justify-between items-center p-5 bg-background">
-        <Button variant={"ghost"} className={"text-2xl font-bold"}>
+        <Button
+          variant={"ghost"}
+          className={"text-2xl font-bold"}
+          onClick={() => {
+            navigate("");
+          }}
+        >
           HIHOLIVE
         </Button>
         {/*<CommandSearch commands={commands} />*/}

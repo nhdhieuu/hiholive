@@ -95,7 +95,9 @@ export default function LoginPage() {
         </Form>
         <div className="text-center pt-5">
           <span>Bạn không có tài khoản? </span>
-          <Link to="/signup">Đăng ký</Link>
+          <Link className={"underline"} to="/signup">
+            Đăng ký
+          </Link>
         </div>
       </div>
     </Container>
