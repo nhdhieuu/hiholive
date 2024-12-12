@@ -3,11 +3,6 @@ import { Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const TopBar = () => {
-  const commands = [
-    { value: "calendar", label: "Calendar" },
-    { value: "search-emoji", label: "Search Emoji" },
-    { value: "calculator", label: "Calculator" },
-  ];
   const navigate = useNavigate();
 
   return (

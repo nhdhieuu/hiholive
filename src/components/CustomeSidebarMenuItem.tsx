@@ -1,4 +1,3 @@
-import React from "react";
 import { cn } from "@/lib/utils";
 import {
   Avatar,
@@ -16,7 +15,6 @@ interface SidebarMenuItemProps {
 }
 
 export function CustomSidebarMenuItem({
-  avatar,
   name,
   category,
   viewers,

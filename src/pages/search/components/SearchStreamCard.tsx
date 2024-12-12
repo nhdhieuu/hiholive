@@ -3,7 +3,6 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar.tsx";
-import React from "react";
 
 export default function SearchStreamCard() {
   return (

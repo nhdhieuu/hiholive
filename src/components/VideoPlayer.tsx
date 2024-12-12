@@ -1,7 +1,8 @@
+/*
 import React, { useEffect, useRef } from "react";
 import shaka from "shaka-player";
 
-const VideoPlayer = ({ src }) => {
+const VideoPlayer = ({ src }: { src: string }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -11,7 +12,7 @@ const VideoPlayer = ({ src }) => {
     player
       .load(src)
       .then(() => console.log("Video loaded successfully!"))
-      .catch((err) => console.error("Error loading video", err));
+      .catch((err: unknown) => console.error("Error loading video", err));
     return () => {
       player.destroy();
     };
@@ -21,3 +22,4 @@ const VideoPlayer = ({ src }) => {
 };
 
 export default VideoPlayer;
+*/
