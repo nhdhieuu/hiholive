@@ -3,11 +3,43 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
-/*
-import VideoPlayer from "@/components/VideoPlayer.tsx";
-*/
+import { VideoJS } from "@/components/VideoJSPlayer.tsx";
+import videojs from "video.js";
 
 export default function StreamingPage() {
+  const playerRef = React.useRef(null);
+
+  const videoJsOptions = {
+    autoplay: true,
+    controls: true,
+    responsive: true,
+    fluid: true,
+    liveui: true,
+    sources: [
+      {
+        src: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.mp4/.m3u8",
+        type: "application/x-mpegURL",
+      },
+    ],
+    controlBar: {
+      volumePanel: true,
+      playToggle: true,
+      fullscreenToggle: true,
+    },
+  };
+
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // You can handle player events here, for example:
+    player.on("waiting", () => {
+      videojs.log("player is waiting");
+    });
+
+    player.on("dispose", () => {
+      videojs.log("player will dispose");
+    });
+  };
   return (
     <div className="min-h-screen">
       {/* Main content area */}
@@ -15,11 +47,9 @@ export default function StreamingPage() {
         {/* Stream and info section */}
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
-          {/*<div className="w-full aspect-video">
-            <VideoPlayer
-              src={"http://34.124.179.64:3000/static/test/index-1080p60.m3u8"}
-            ></VideoPlayer>
-          </div>*/}
+          <div className="w-full">
+            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+          </div>
 
           {/* Channel info section */}
           <div className="p-4 ">
