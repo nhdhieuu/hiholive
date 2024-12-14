@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
 export const VideoJS = (props) => {
-  const videoRef = React.useRef(null);
-  const playerRef = React.useRef(null);
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
   const { options, onReady } = props;
 
-  React.useEffect(() => {
+  // Effect to initialize the player
+  useEffect(() => {
     if (!playerRef.current) {
       const videoElement = document.createElement("video-js");
 
@@ -34,7 +35,9 @@ export const VideoJS = (props) => {
         },
         () => {
           videojs.log("player is ready");
-          onReady && onReady(player);
+          if (onReady) {
+            onReady(player); // Explicitly call onReady if defined
+          }
         },
       ));
     } else {
@@ -42,9 +45,10 @@ export const VideoJS = (props) => {
       player.autoplay(options.autoplay);
       player.src(options.sources);
     }
-  }, [options, videoRef]);
+  }, [options, videoRef, onReady]); // Add 'onReady' to the dependency array
 
-  React.useEffect(() => {
+  // Cleanup effect to dispose the player
+  useEffect(() => {
     const player = playerRef.current;
 
     return () => {
