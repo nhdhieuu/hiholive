@@ -5,10 +5,11 @@ import { Users } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
-import React from "react";
+import { useRef } from "react";
+import Player from "video.js/dist/types/player";
 
 export default function StreamingPage() {
-  const playerRef = React.useRef(null);
+  const playerRef = useRef<Player | null>(null);
 
   const videoJsOptions = {
     autoplay: true,
@@ -23,13 +24,18 @@ export default function StreamingPage() {
       },
     ],
     controlBar: {
+      progressControl: false, // You can customize controlBar properties
+      remainingTimeDisplay: false,
+      durationDisplay: false,
+      currentTimeDisplay: false,
       volumePanel: true,
       playToggle: true,
       fullscreenToggle: true,
     },
   };
 
-  const handlePlayerReady = (player) => {
+  // Type 'player' parameter explicitly as 'Player'
+  const handlePlayerReady = (player: Player) => {
     playerRef.current = player;
 
     // You can handle player events here, for example:
