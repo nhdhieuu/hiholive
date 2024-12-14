@@ -5,6 +5,7 @@ import { Users } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
+import React from "react";
 
 export default function StreamingPage() {
   const playerRef = React.useRef(null);
