@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
+import { authenticate } from "@/pages/login/api/authenticate.ts";
 
 // Define validation schema
 const formSchema = z.object({
@@ -44,8 +45,16 @@ export default function LoginPage() {
   });
 
   // Submit handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values); // Handle validated form values
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await authenticate(values);
+      console.log("Login successful:", response);
+      // Handle success (e.g., save token, navigate to dashboard)
+      alert("Đăng nhập thành công!");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Đăng nhập thất bại. Vui lòng kiểm tra thông tin của bạn.");
+    }
   }
 
   return (
