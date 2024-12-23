@@ -4,9 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calendar } from "lucide-react";
 import { useState } from "react";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { DatePickerComponent } from "@/components/DatePickerComponent.tsx";
+import {
+  createStream,
+  CreateStreamRequest,
+} from "@/layouts/api/createStream.ts";
 
 interface StreamDialogProps {
   open: boolean;
@@ -16,7 +20,27 @@ interface StreamDialogProps {
 export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
   const [title, setTitle] = useState("");
   const [notification, setNotification] = useState("nhdhieuu went live!");
-  const [isRerun, setIsRerun] = useState(false);
+  const [description, setDescription] = useState("");
+
+  const [isRerun, setIsRerun] = useState<boolean>(false); // Đảm bảo sử dụng đúng kiểu dữ liệu
+  // Hàm submit khi người dùng nhấn Done
+  async function onSubmitCreateStream() {
+    try {
+      const payload: CreateStreamRequest = {
+        title: title,
+        description: description,
+        notification: notification,
+        scheduledStartTime: new Date(), // Thay đổi điều này theo DatePickerComponent
+        isRerun: isRerun,
+      };
+
+      const response = await createStream(payload);
+      console.log(response.data);
+      onOpenChange(false); // Đóng modal sau khi submit thành công
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -38,7 +62,22 @@ export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
               </span>
             </div>
           </div>
-
+          <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
+            <div className="relative">
+              <Input
+                id="title"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                maxLength={140}
+                className="pr-16"
+                placeholder="123"
+              />
+              <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">
+                {title.length}/140
+              </span>
+            </div>
+          </div>
           <div className="grid gap-2">
             <Label htmlFor="notification">Go Live Notification</Label>
             <div className="relative">
@@ -56,38 +95,9 @@ export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
           </div>
 
           <div className="grid gap-2">
-            <Label>Category</Label>
-            <div className="relative">
-              <Input
-                type="search"
-                placeholder="Search for a category"
-                className="pl-10"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-            </div>
-          </div>
-
-          <div className="grid gap-2">
             <Label>Schedule</Label>
             <div className="relative">
-              <Input
-                type="text"
-                className="pl-10"
-                defaultValue="12 Dec 2024 20:00"
-              />
-              <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+              <DatePickerComponent />
             </div>
           </div>
 
@@ -100,10 +110,11 @@ export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
             <div className="grid gap-1.5 leading-none">
               <label
                 htmlFor="rerun"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="text-sm font-medium leading-none"
               >
                 Rerun
               </label>
+
               <p className="text-sm text-muted-foreground">
                 Let viewers know your stream was previously recorded. Failure to
                 label Reruns leads to viewer confusion which damages trust.
@@ -119,7 +130,11 @@ export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
           >
             Cancel
           </Button>
-          <Button type="submit" className="bg-[#9333EA] hover:bg-[#7E22CE]">
+          <Button
+            type="submit"
+            onClick={onSubmitCreateStream}
+            className="bg-[#9333EA] hover:bg-[#7E22CE]"
+          >
             Done
           </Button>
         </DialogFooter>
