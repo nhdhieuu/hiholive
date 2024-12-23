@@ -48,7 +48,7 @@ export function ChannelSettingModal({
           </div>
           <div className="grid gap-2">
             <Label htmlFor="username">Tên người dùng</Label>
-            <Input id="username" defaultValue="nhdhieuu" />
+            <Input id="username" defaultValue="nhdhieuu" disabled={"disable"} />
             <p className="text-xs text-muted-foreground">
               Bạn có thể cập nhật tên người dùng của mình
             </p>

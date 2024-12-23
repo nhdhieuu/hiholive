@@ -7,8 +7,12 @@ export interface CreateStreamRequest {
   isRerun: boolean;
   scheduledStartTime: Date;
 }
+interface CreateStreamResponseData {
+  streamKey: string;
+  rtmpLink: string;
+}
 interface CreateStreamResponse {
-  data: string;
+  data: CreateStreamResponseData;
 }
 export async function createStream(
   body: CreateStreamRequest,
