@@ -123,9 +123,10 @@ export default function HomePage() {
         <h1 className={"text-2xl font-bold"}>
           Categories we think you’ll like
         </h1>
-        <div className={" flex gap-4 "}>
-          {categoryMockData.map((data) => (
+        <div className="flex gap-4">
+          {categoryMockData.map((data, index) => (
             <CategoryCard
+              key={data.title || index} // Sử dụng `data.id` nếu có, nếu không dùng `index` như giải pháp dự phòng
               title={data.title}
               viewers={data.viewers}
               tags={data.tags}
