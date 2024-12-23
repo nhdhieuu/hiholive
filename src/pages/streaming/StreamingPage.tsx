@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users } from "lucide-react";
-import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
 import { useRef } from "react";
 import Player from "video.js/dist/types/player";
+import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 
 export default function StreamingPage() {
   const playerRef = useRef<Player | null>(null);
@@ -48,7 +48,7 @@ export default function StreamingPage() {
     });
   };
   return (
-    <div className="min-h-screen">
+    <div className="max-h-screen">
       {/* Main content area */}
       <div className="flex ">
         {/* Stream and info section */}
@@ -133,33 +133,7 @@ export default function StreamingPage() {
         </div>
 
         {/* Chat sidebar */}
-        <div className="w-80 bg-white p-4">
-          <div className="space-y-4">
-            {/* Chat messages */}
-            <div className="space-y-2">
-              <CommentTag
-                date={"19:36"}
-                username={"nhdieuu"}
-                content={"Let's go void walker win my 500$"}
-              ></CommentTag>
-              <CommentTag
-                date={"19:36"}
-                username={"nhdieuu"}
-                content={"Ez baron"}
-              ></CommentTag>
-              <CommentTag
-                date={"19:36"}
-                username={"nhdieuu"}
-                content={"Thanks void walkers"}
-              ></CommentTag>
-            </div>
-
-            {/* Vietnamese text */}
-            <div className="text-sm text-zinc-300">
-              Chào mừng bạn đến với phòng trò chuyện!
-            </div>
-          </div>
-        </div>
+        <ChatSidebar></ChatSidebar>
       </div>
     </div>
   );

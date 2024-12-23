@@ -2,10 +2,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeStreamCard() {
+  const navigate = useNavigate();
   return (
-    <Card className="w-full overflow-hidden bg-background hover:bg-gray-50">
+    <Card
+      className="w-full overflow-hidden bg-background hover:bg-gray-50"
+      onClick={() => {
+        navigate("/streaming");
+      }}
+    >
       {/* Stream Preview Section */}
       <div className="relative aspect-video overflow-hidden bg-muted">
         <div className="absolute left-4 top-4 flex items-center gap-2 rounded-md bg-red-600 px-2 py-1 text-white">
