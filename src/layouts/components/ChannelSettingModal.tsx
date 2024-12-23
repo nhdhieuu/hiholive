@@ -38,7 +38,14 @@ export function ChannelSettingModal({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="text-center">
-              <Button variant="outline" size="sm" className="mb-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="mb-2"
+                onClick={() =>
+                  setAvatar(prompt("Nhập URL ảnh hồ sơ mới:") || avatar)
+                }
+              >
                 Thêm ảnh hồ sơ
               </Button>
               <p className="text-xs text-muted-foreground">
@@ -48,7 +55,7 @@ export function ChannelSettingModal({
           </div>
           <div className="grid gap-2">
             <Label htmlFor="username">Tên người dùng</Label>
-            <Input id="username" defaultValue="nhdhieuu" disabled={"disable"} />
+            <Input id="username" defaultValue="nhdhieuu" disabled={true} />
             <p className="text-xs text-muted-foreground">
               Bạn có thể cập nhật tên người dùng của mình
             </p>
