@@ -12,14 +12,13 @@ import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { authenticate } from "@/pages/login/api/authenticate.ts";
+import { toast } from "react-toastify";
 
 // Define validation schema
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  email: z.string().email({ message: "Email không hợp lệ." }),
   password: z
     .string()
     .min(6, {
@@ -35,11 +34,12 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -48,12 +48,31 @@ export default function LoginPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await authenticate(values);
-      console.log("Login successful:", response);
+      toast.success("Đăng nhập thành công!", {
+        position: "top-right",
+        autoClose: 3000, // Tự động đóng sau 3 giây
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      localStorage.setItem(
+        "token",
+        JSON.stringify(response.data.accessToken.token),
+      );
+      console.log("token", localStorage.getItem("token"));
+      navigate("/");
       // Handle success (e.g., save token, navigate to dashboard)
-      alert("Đăng nhập thành công!");
     } catch (error) {
-      console.error("Login failed:", error);
-      alert("Đăng nhập thất bại. Vui lòng kiểm tra thông tin của bạn.");
+      console.log(error);
+      toast.error("Đăng nhập thất bại!", {
+        position: "top-right",
+        autoClose: 3000, // Tự động đóng sau 3 giây
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   }
 
@@ -65,13 +84,12 @@ export default function LoginPage() {
         </h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            {/* Username Field */}
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên người dùng</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

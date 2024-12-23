@@ -1,26 +1,29 @@
 import axiosInstance from "@/axiosSetup.ts";
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
-
-export interface AccessToken {
+interface AccessToken {
+  accessToken: AccessTokenData;
+}
+interface AccessTokenData {
   token: string;
-  expiredIn: number;
+  expiresIn: number;
 }
 
-export interface LoginResponse {
-  accessToken: AccessToken;
+interface LoginResponse {
+  data: AccessToken;
 }
 
 export async function authenticate(body: LoginRequest): Promise<LoginResponse> {
   try {
     const response = await axiosInstance.post<LoginResponse>(
-      "/v1/auth/login/",
+      "/v1/auth/login",
       body,
     );
-    return response.data.data;
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error("Fetch error:", error);
     throw error;
