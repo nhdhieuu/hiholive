@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button.tsx";
-import { Mail } from "lucide-react";
+import { Globe, LogOut, Mail, Settings, User, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -7,6 +7,13 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar.tsx";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const TopBar = () => {
   const navigate = useNavigate();
@@ -39,10 +46,60 @@ export const TopBar = () => {
             <Mail size={32} />
           </button>
           {isLoggedIn ? (
-            <Avatar className={"cursor-pointer"}>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <div className="flex items-center gap-2 p-2">
+                  <Avatar>
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">nhdhieuu</p>
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Kênh</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Video className="mr-2 h-4 w-4" />
+                  <span>Trình tạo video</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Cài đặt</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>Ngôn ngữ</span>
+                </DropdownMenuItem>
+                {/*<DropdownMenuItem className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Moon className="mr-2 h-4 w-4" />
+                    <span>Chủ đề tối</span>
+                  </div>
+                  <Switch />
+                </DropdownMenuItem>*/}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Đăng xuất</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <div>
               <Button
