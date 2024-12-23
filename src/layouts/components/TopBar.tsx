@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChannelSettingModal } from "@/layouts/components/ChannelSettingModal.tsx";
 import { StreamDialog } from "./StreamDialog";
+import { SearchBar } from "@/layouts/components/SearchBar.tsx";
 
 export const TopBar = () => {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ export const TopBar = () => {
         >
           HIHOLIVE
         </Button>
+        <SearchBar></SearchBar>
         {/*<CommandSearch commands={commands} />*/}
         <div className={"flex space-x-5 items-center"}>
           <button className={"hover:bg-accent p-1 rounded-md"}>
