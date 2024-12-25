@@ -14,20 +14,19 @@ import {
 import { StreamInfoModal } from "@/layouts/components/StreamInfoModal.tsx";
 
 interface StreamDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
 }
 
-export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
+export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
   const [title, setTitle] = useState("");
   const [notification, setNotification] = useState("nhdhieuu went live!");
   const [description, setDescription] = useState("");
-  const [isRerun, setIsRerun] = useState<boolean>(false); // Đảm bảo sử dụng đúng kiểu dữ liệu
-  const [streamKey, setStreamKey] = useState<string>(""); // State to store streamKey
-  const [rtmpLink, setRtmpLink] = useState<string>(""); // State to store rtmpLink
+  const [isRerun, setIsRerun] = useState<boolean>(false);
+  const [streamKey, setStreamKey] = useState<string>("");
+  const [rtmpLink, setRtmpLink] = useState<string>("");
   const [showStreamInfoModal, setShowStreamInfoModal] =
-    useState<boolean>(false); // State to control the modal
-  // Hàm submit khi người dùng nhấn Done
+    useState<boolean>(false);
   async function onSubmitCreateStream() {
     try {
       const payload: CreateStreamRequest = {
@@ -54,7 +53,7 @@ export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
 
   return (
     <div>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[600px]">
           <div className="grid gap-6 py-4">
             <div className="grid gap-2">
@@ -137,7 +136,11 @@ export function StreamDialog({ open, onOpenChange }: StreamDialogProps) {
             <Button
               type="button"
               variant="secondary"
-              onClick={() => onOpenChange(false)}
+              onClick={() => {
+                console.log(open);
+                onOpenChange(false);
+                console.log(open);
+              }}
             >
               Cancel
             </Button>

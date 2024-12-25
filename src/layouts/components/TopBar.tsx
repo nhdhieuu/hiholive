@@ -21,8 +21,8 @@ import { SearchBar } from "@/layouts/components/SearchBar.tsx";
 export const TopBar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [showChannelDialog, setShowChannelDialog] = useState(false);
-  const [showStreamDialog, setShowStreamDialog] = useState(false);
+  const [showChannelDialog, setShowChannelDialog] = useState<boolean>(false);
+  const [showStreamDialog, setShowStreamDialog] = useState<boolean>(false);
 
   useEffect(() => {
     const auth = localStorage.getItem("token");
@@ -116,7 +116,7 @@ export const TopBar = () => {
                 onOpenChange={setShowChannelDialog}
               />
               <StreamDialog
-                open={showStreamDialog}
+                isOpen={showStreamDialog}
                 onOpenChange={setShowStreamDialog}
               />
             </div>
@@ -138,11 +138,6 @@ export const TopBar = () => {
               </Button>
             </div>
           )}
-
-          {/*<Avatar className={"cursor-pointer"}>
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>*/}
         </div>
       </div>
     </div>
