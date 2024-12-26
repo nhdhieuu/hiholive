@@ -7,13 +7,12 @@ import { useEffect, useRef } from "react";
 import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 import { useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
-import { SOCKET_BASE_URL } from "@/common/constant.ts";
+import { useSocketStore } from "@/stores/useSocket";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
   const playerRef = useRef<Player | null>(null);
-  const token = localStorage.getItem("token");
+  const { socket } = useSocketStore();
   const videoJsOptions = {
     autoplay: true,
     controls: true,
@@ -52,19 +51,13 @@ export default function StreamingPage() {
   };
 
   useEffect(() => {
-    if (token) {
-      const socket = io(SOCKET_BASE_URL, {
-        transports: ["websocket"],
-      });
-      socket.on("connect", () => {
-        console.log(socket.connected);
-      });
+    if (socket) {
       socket.emit("joinStream", { streamId: "DTB4JQCHb8wn9Hr" });
       socket.on("joinStream", (data) => {
-        console.log("Đã tham gia stream:", data);
+        console.log("Joined stream:", data);
       });
     }
-  }, []);
+  }, [socket]);
   return (
     <div className="max-h-screen">
       {/* Main content area */}
@@ -158,7 +151,7 @@ export default function StreamingPage() {
         </div>
 
         {/* Chat sidebar */}
-        <ChatSidebar></ChatSidebar>
+        <ChatSidebar streamId={"DTB4JQCHb8wn9Hr"}></ChatSidebar>
       </div>
     </div>
   );

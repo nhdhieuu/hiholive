@@ -5,14 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
+import { useSocketStore } from "@/stores/useSocket.ts";
 
 interface Message {
   date: string;
   username: string;
   content: string;
 }
-
-export function ChatSidebar() {
+interface ChatSidebarProps {
+  streamId: string;
+}
+export function ChatSidebar({ streamId }: ChatSidebarProps) {
+  const { socket } = useSocketStore();
   const [messages, setMessages] = useState<Message[]>([
     {
       date: "19:36",
@@ -48,6 +52,15 @@ export function ChatSidebar() {
         hour: "2-digit",
         minute: "2-digit",
       });
+      if (socket) {
+        socket.emit("sendMessage", {
+          streamId,
+          message: newMessage,
+        });
+        socket.on("sendMessage", (data) => {
+          console.log("Sent message:", data);
+        });
+      }
 
       setMessages([
         ...messages,
