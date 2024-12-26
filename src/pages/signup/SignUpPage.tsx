@@ -1,4 +1,4 @@
-import Container from "@/layouts/components/Container.tsx";
+import Container from "@/layouts/user/components/Container.tsx";
 import {
   Form,
   FormControl,

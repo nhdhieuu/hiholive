@@ -13,10 +13,10 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChannelSettingModal } from "@/layouts/components/ChannelSettingModal.tsx";
-import { StreamDialog } from "./StreamDialog";
-import { SearchBar } from "@/layouts/components/SearchBar.tsx";
+} from "@/components/ui/dropdown-menu.tsx";
+import { ChannelSettingModal } from "@/layouts/user/components/ChannelSettingModal.tsx";
+import { StreamDialog } from "./StreamDialog.tsx";
+import { SearchBar } from "@/layouts/user/components/SearchBar.tsx";
 
 export const TopBar = () => {
   const navigate = useNavigate();
