@@ -13,7 +13,7 @@ import { Home, Settings, Tag, User } from "lucide-react";
 const items = [
   {
     title: "Live",
-    url: "#",
+    url: "/admin/",
     icon: Home,
   },
   {

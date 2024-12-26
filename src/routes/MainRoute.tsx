@@ -7,6 +7,8 @@ import StreamingPage from "@/pages/streaming/StreamingPage.tsx";
 import SearchPage from "@/pages/search/SearchPage.tsx";
 import ChannelPage from "@/pages/channel/ChannelPage.tsx";
 import AdminLayout from "@/layouts/admin/AdminLayout.tsx";
+import { AdminSettingPage } from "@/pages/admin/setting/AdminSettingPage.tsx";
+import { AdminUserPage } from "@/pages/admin/user/AdminUserPage.tsx";
 
 export const MainRoute = () => {
   return (
@@ -25,9 +27,9 @@ export const MainRoute = () => {
           <Route index element={<div>Welcome to Admin Panel</div>} />
 
           {/* Admin Sidebar with different routes */}
-          <Route path="users" element={<div>Users Page</div>} />
+          <Route path="users" element={<AdminUserPage />} />
           <Route path="categories" element={<div>Categories Page</div>} />
-          <Route path="settings" element={<div>Settings Page</div>} />
+          <Route path="settings" element={<AdminSettingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
