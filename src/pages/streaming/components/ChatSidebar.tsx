@@ -7,6 +7,14 @@ import { Send } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { useSocketStore } from "@/stores/useSocket.ts";
 
+interface Paging {
+  limit: string;
+  nextCursor: {
+    messageId: string;
+    streamId: string;
+  };
+}
+
 interface MessageResponse {
   createdAt: string;
   message: string;
@@ -35,7 +43,9 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
   const { socket } = useSocketStore();
   const [messages, setMessages] = useState<MessageResponse[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [page, setPage] = useState(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,16 +63,18 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
         },
         paging: {
           limit: 15,
+          page: page,
         },
       });
 
       socket.on("listChat", (data) => {
+        console.log("response: ", data);
         console.log("List chat:", data.data);
         const reversedMessages = [...data.data].reverse();
-        setMessages(reversedMessages);
+        setMessages((prevMessages) => [...reversedMessages, ...prevMessages]);
       });
     }
-  }, [socket, streamId]);
+  }, [socket, streamId, page]);
 
   const handleSend = () => {
     if (newMessage.trim()) {
@@ -107,9 +119,23 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
     }
   };
 
+  /*const handleScroll = () => {
+    if (messagesContainerRef.current) {
+      if (messagesContainerRef.current.scrollTop === 0) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }
+  };*/
+
   return (
     <div className="w-80 bg-white p-4 flex flex-col ">
-      <div className={"flex-1 overflow-y-scroll max-h-[700px]"}>
+      <div
+        className="flex-1 overflow-y-scroll max-h-[700px]"
+        ref={messagesContainerRef}
+        /*
+        onScroll={handleScroll}
+*/
+      >
         <div className="space-y-4 mb-4">
           <div className="space-y-2">
             {messages.map((message, index) => (
