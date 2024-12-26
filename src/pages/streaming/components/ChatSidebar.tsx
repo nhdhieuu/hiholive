@@ -7,33 +7,33 @@ import { Send } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { useSocketStore } from "@/stores/useSocket.ts";
 
-interface Message {
-  date: string;
-  username: string;
-  content: string;
+interface MessageResponse {
+  createdAt: string;
+  message: string;
+  messageId: string;
+  streamId: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
 }
+
 interface ChatSidebarProps {
   streamId: string;
 }
+
+function convertToTime(isoString: string) {
+  const date = new Date(isoString);
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
 export function ChatSidebar({ streamId }: ChatSidebarProps) {
   const { socket } = useSocketStore();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      date: "19:36",
-      username: "nhdieuu",
-      content: "Let's go void walker win my 500$",
-    },
-    {
-      date: "19:36",
-      username: "nhdieuu",
-      content: "Ez baron",
-    },
-    {
-      date: "19:36",
-      username: "nhdieuu",
-      content: "Thanks void walkers",
-    },
-  ]);
+  const [messages, setMessages] = useState<MessageResponse[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +44,25 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("listChat", {
+        filter: {
+          streamId: streamId,
+        },
+        paging: {
+          limit: 15,
+        },
+      });
+
+      socket.on("listChat", (data) => {
+        console.log("List chat:", data.data);
+        const reversedMessages = [...data.data].reverse();
+        setMessages(reversedMessages);
+      });
+    }
+  }, [socket, streamId]);
 
   const handleSend = () => {
     if (newMessage.trim()) {
@@ -65,9 +84,16 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
       setMessages([
         ...messages,
         {
-          date: currentTime,
-          username: "nhdieuu", // This would normally come from auth context
-          content: newMessage.trim(),
+          createdAt: currentTime,
+          messageId: "nhdieuu",
+          message: newMessage.trim(),
+          streamId,
+          updatedAt: currentTime,
+          user: {
+            id: "1",
+            firstName: "User",
+            lastName: "Name",
+          },
         },
       ]);
       setNewMessage("");
@@ -83,24 +109,21 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
 
   return (
     <div className="w-80 bg-white p-4 flex flex-col ">
-      {/* Messages container */}
       <div className={"flex-1 overflow-y-scroll max-h-[700px]"}>
         <div className="space-y-4 mb-4">
           <div className="space-y-2">
             {messages.map((message, index) => (
               <CommentTag
                 key={index}
-                date={message.date}
-                username={message.username}
-                content={message.content}
+                date={convertToTime(message.createdAt)}
+                username={`${message.user.firstName} ${message.user.lastName}`}
+                content={message.message}
               />
             ))}
             <div ref={messagesEndRef} />
           </div>
         </div>
       </div>
-
-      {/* Chat input */}
       <div className="flex  items-center gap-2">
         <Textarea
           value={newMessage}
