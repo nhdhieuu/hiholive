@@ -1,26 +1,29 @@
 import "./App.css";
 import { MainRoute } from "@/routes/MainRoute.tsx";
 import { ToastContainer } from "react-toastify";
-import { io } from "socket.io-client";
-import { SOCKET_BASE_URL } from "@/common/constant.ts";
 import { useEffect } from "react";
+import { useSocketStore } from "./stores/useSocket";
 
 function App() {
+  const { socket, setSocket } = useSocketStore();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const socket = io(SOCKET_BASE_URL, {
-      transports: ["websocket"],
-    });
-    socket.on("connect", () => {
-      console.log(socket.connected);
-    });
     if (token) {
-      socket.emit("authentication", { token: JSON.parse(token) });
+      setSocket(token);
+    }
+  }, [setSocket]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("authentication", {
+        token: JSON.parse(localStorage.getItem("token") || ""),
+      });
       socket.on("authentication", (data) => {
-        console.log("Đã xác thực thành công:", data);
+        console.log("Authenticated successfully:", data);
       });
     }
-  }, []);
+  }, [socket]);
   return (
     <main>
       <MainRoute />
