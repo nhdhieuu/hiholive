@@ -57,7 +57,7 @@ export const TopBar = () => {
           </button>
           {isLoggedIn ? (
             <div>
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
                     <AvatarImage
