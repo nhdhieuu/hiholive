@@ -3,15 +3,17 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+import { SOCKET_BASE_URL } from "@/common/constant.ts";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
   const playerRef = useRef<Player | null>(null);
-
+  const token = localStorage.getItem("token");
   const videoJsOptions = {
     autoplay: true,
     controls: true,
@@ -48,6 +50,21 @@ export default function StreamingPage() {
       videojs.log("player will dispose");
     });
   };
+
+  useEffect(() => {
+    if (token) {
+      const socket = io(SOCKET_BASE_URL, {
+        transports: ["websocket"],
+      });
+      socket.on("connect", () => {
+        console.log(socket.connected);
+      });
+      socket.emit("joinStream", { streamId: "DTB4JQCHb8wn9Hr" });
+      socket.on("joinStream", (data) => {
+        console.log("Đã tham gia stream:", data);
+      });
+    }
+  }, []);
   return (
     <div className="max-h-screen">
       {/* Main content area */}
