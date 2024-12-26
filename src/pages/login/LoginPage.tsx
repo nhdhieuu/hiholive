@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { authenticate } from "@/pages/login/api/authenticate.ts";
 import { toast } from "react-toastify";
+import { io } from "socket.io-client";
+import { SOCKET_BASE_URL } from "@/common/constant.ts";
 
 // Define validation schema
 const formSchema = z.object({
@@ -61,6 +63,21 @@ export default function LoginPage() {
         JSON.stringify(response.data.accessToken.token),
       );
       console.log("token", localStorage.getItem("token"));
+      const token = localStorage.getItem("token");
+
+      //socket-io
+      if (token) {
+        const socket = io(SOCKET_BASE_URL, {
+          transports: ["websocket"],
+        });
+        socket.emit("authentication", {
+          token: JSON.parse(token),
+        });
+        socket.on("authentication", (data) => {
+          console.log("Đã xác thực thành công:", data);
+        });
+      }
+
       navigate("/");
       // Handle success (e.g., save token, navigate to dashboard)
     } catch (error) {
