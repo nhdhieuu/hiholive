@@ -73,7 +73,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
     console.log("messages before: ", messages);
     fetchChatData();
     console.log("messages AFTER: ", messages);
-  }, []);
+  });
 
   const handleSend = () => {
     if (newMessage.trim()) {

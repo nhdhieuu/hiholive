@@ -19,6 +19,7 @@ import { StreamInfoModal } from "@/layouts/user/components/StreamInfoModal.tsx";
 
 interface StreamDialogProps {
   isOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
   onOpenChange: (isOpen: boolean) => void;
 }
 

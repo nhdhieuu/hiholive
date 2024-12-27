@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea.tsx";
 
 interface ChannelSettingModalProps {
   open: boolean;
+  // eslint-disable-next-line no-unused-vars
   onOpenChange: (open: boolean) => void;
 }
 

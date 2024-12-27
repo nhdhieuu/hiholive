@@ -4,6 +4,7 @@ import { SOCKET_BASE_URL } from "@/common/constant.ts";
 
 interface SocketState {
   socket: Socket | null;
+  // eslint-disable-next-line no-unused-vars
   setSocket: (token: string) => void;
 }
 

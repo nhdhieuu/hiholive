@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label.tsx";
 
 interface StreamInfoModalProps {
   open: boolean;
+  // eslint-disable-next-line no-unused-vars
   onOpenChange: (open: boolean) => void;
   streamKey: string;
   rtmpLink: string;
