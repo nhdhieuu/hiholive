@@ -1,11 +1,9 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { CustomSidebarMenuItem } from "@/components/CustomeSidebarMenuItem.tsx";
 
@@ -56,9 +54,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className={"flex items-end"}>
-        <SidebarTrigger></SidebarTrigger>
-      </SidebarFooter>
     </Sidebar>
   );
 }

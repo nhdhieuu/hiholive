@@ -1,17 +1,21 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button.tsx";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+} from "@/components/ui/dialog.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Label } from "@/components/ui/label.tsx";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { DatePickerComponent } from "@/components/DatePickerComponent.tsx";
 import {
   createStream,
   CreateStreamRequest,
-} from "@/layouts/api/createStream.ts";
-import { StreamInfoModal } from "@/layouts/components/StreamInfoModal.tsx";
+} from "@/layouts/user/api/createStream.ts";
+import { StreamInfoModal } from "@/layouts/user/components/StreamInfoModal.tsx";
 
 interface StreamDialogProps {
   isOpen: boolean;

@@ -3,15 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 import { useNavigate } from "react-router-dom";
+import { useSocketStore } from "@/stores/useSocket";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
   const playerRef = useRef<Player | null>(null);
-
+  const { socket } = useSocketStore();
   const videoJsOptions = {
     autoplay: true,
     controls: true,
@@ -48,6 +49,15 @@ export default function StreamingPage() {
       videojs.log("player will dispose");
     });
   };
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("joinStream", { streamId: "DTB4JQCHb8wn9Hr" });
+      socket.on("joinStream", (data) => {
+        console.log("Joined stream:", data);
+      });
+    }
+  }, [socket]);
   return (
     <div className="max-h-screen">
       {/* Main content area */}
@@ -141,7 +151,7 @@ export default function StreamingPage() {
         </div>
 
         {/* Chat sidebar */}
-        <ChatSidebar></ChatSidebar>
+        <ChatSidebar streamId={"DTB4JQCHb8wn9Hr"}></ChatSidebar>
       </div>
     </div>
   );
