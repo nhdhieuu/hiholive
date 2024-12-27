@@ -15,6 +15,7 @@ interface VideoJSProps {
       currentTimeDisplay: boolean;
     };
   };
+  // eslint-disable-next-line no-unused-vars
   onReady?: (player: Player) => void;
 }
 

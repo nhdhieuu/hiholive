@@ -1,19 +1,11 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { useSocketStore } from "@/stores/useSocket.ts";
-
-interface Paging {
-  limit: string;
-  nextCursor: {
-    messageId: string;
-    streamId: string;
-  };
-}
+import InfiniteScroll from "react-infinite-scroll-component";
+import { Paging } from "@/types/paging.ts";
 
 interface MessageResponse {
   createdAt: string;
@@ -42,39 +34,46 @@ function convertToTime(isoString: string) {
 export function ChatSidebar({ streamId }: ChatSidebarProps) {
   const { socket } = useSocketStore();
   const [messages, setMessages] = useState<MessageResponse[]>([]);
+  const [paging, setPaging] = useState<Paging>({
+    limit: 100,
+    page: 0,
+    total: 0,
+  });
   const [newMessage, setNewMessage] = useState("");
-  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
+  const fetchChatData = () => {
     if (socket) {
-      socket.emit("listChat", {
+      console.log({
         filter: {
           streamId: streamId,
         },
-        paging: {
-          limit: 15,
-          page: page,
+        paging: paging,
+      });
+      socket.emit(
+        "chat:list",
+        {
+          filter: {
+            streamId: streamId,
+          },
+          paging: paging,
         },
-      });
-
-      socket.on("listChat", (data) => {
-        console.log("response: ", data);
-        console.log("List chat:", data.data);
-        const reversedMessages = [...data.data].reverse();
-        setMessages((prevMessages) => [...reversedMessages, ...prevMessages]);
-      });
+        (data: { data: MessageResponse[]; paging: Paging }) => {
+          console.log(data);
+          const reverseList = [...data.data].reverse();
+          setMessages(reverseList);
+          setPaging(data.paging);
+        },
+      );
     }
-  }, [socket, streamId, page]);
+  };
+
+  useEffect(() => {
+    console.log("messages before: ", messages);
+    fetchChatData();
+    console.log("messages AFTER: ", messages);
+  });
 
   const handleSend = () => {
     if (newMessage.trim()) {
@@ -84,11 +83,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
         minute: "2-digit",
       });
       if (socket) {
-        socket.emit("sendMessage", {
-          streamId,
-          message: newMessage,
-        });
-        socket.on("sendMessage", (data) => {
+        socket.emit("chat:create", newMessage, (data: unknown) => {
           console.log("Sent message:", data);
         });
       }
@@ -119,37 +114,63 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
     }
   };
 
-  /*const handleScroll = () => {
-    if (messagesContainerRef.current) {
-      if (messagesContainerRef.current.scrollTop === 0) {
-        setPage((prevPage) => prevPage + 1);
-      }
+  const fetchMoreData = () => {
+    if (socket) {
+      socket.emit("chat:list", {
+        filter: {
+          streamId: streamId,
+        },
+        paging: paging,
+      });
+
+      socket.on(
+        "listChat",
+        (data: { data: MessageResponse[]; paging: Paging }) => {
+          if (data.paging.nextCursor === undefined) {
+            setHasMore(false);
+          } else {
+            setPaging((prevPaging) => ({
+              ...prevPaging,
+              cursor: data.paging.nextCursor,
+            }));
+            console.log("next cursor: ", data.paging.nextCursor);
+          }
+          const reversedMessages = [...data.data].reverse();
+          setMessages((prevMessages) => [...reversedMessages, ...prevMessages]);
+        },
+      );
     }
-  };*/
+  };
 
   return (
     <div className="w-80 bg-white p-4 flex flex-col ">
-      <div
-        className="flex-1 overflow-y-scroll max-h-[700px]"
-        ref={messagesContainerRef}
-        /*
-        onScroll={handleScroll}
-*/
-      >
-        <div className="space-y-4 mb-4">
-          <div className="space-y-2">
-            {messages.map((message, index) => (
-              <CommentTag
-                key={index}
-                date={convertToTime(message.createdAt)}
-                username={`${message.user.firstName} ${message.user.lastName}`}
-                content={message.message}
-              />
-            ))}
-            <div ref={messagesEndRef} />
+      <div className={"flex flex-col-reverse"}>
+        <InfiniteScroll
+          style={{ display: "flex", flexDirection: "column-reverse" }}
+          dataLength={messages.length}
+          height={700}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          endMessage={<p style={{ textAlign: "center" }}>No more messages</p>}
+          className="flex-1 overflow-y-scroll max-h-[700px] "
+        >
+          <div className="space-y-4 mb-4">
+            <div className="space-y-2">
+              {messages.map((message, index) => (
+                <CommentTag
+                  key={index}
+                  date={convertToTime(message.createdAt)}
+                  username={`${message.user.firstName} ${message.user.lastName}`}
+                  content={message.message}
+                />
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
           </div>
-        </div>
+        </InfiniteScroll>
       </div>
+
       <div className="flex  items-center gap-2">
         <Textarea
           value={newMessage}

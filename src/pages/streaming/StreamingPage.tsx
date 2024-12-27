@@ -52,9 +52,8 @@ export default function StreamingPage() {
 
   useEffect(() => {
     if (socket) {
-      socket.emit("joinStream", { streamId: "DTB4JQCHb8wn9Hr" });
-      socket.on("joinStream", (data) => {
-        console.log("Joined stream:", data);
+      socket.emit("stream:view", "DTHXLnQHZ1PbtV2", (data: unknown) => {
+        console.log("Join Streamchat successfully", data);
       });
     }
   }, [socket]);
@@ -151,7 +150,7 @@ export default function StreamingPage() {
         </div>
 
         {/* Chat sidebar */}
-        <ChatSidebar streamId={"DTB4JQCHb8wn9Hr"}></ChatSidebar>
+        <ChatSidebar streamId={"DTHXLnQHZ1PbtV2"}></ChatSidebar>
       </div>
     </div>
   );

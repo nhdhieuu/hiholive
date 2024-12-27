@@ -161,12 +161,10 @@ export function AdminSettingPage() {
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id],
     );
   };
-
-  const formatValue = (value: any) => {
+  const formatValue = (value: object | string | number | boolean | null) => {
     if (typeof value === "object" && value !== null) {
       return JSON.stringify(value, null, 2);
     }
-    return value.toString();
   };
 
   return (

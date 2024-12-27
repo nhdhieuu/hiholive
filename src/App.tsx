@@ -16,12 +16,16 @@ function App() {
 
   useEffect(() => {
     if (socket) {
-      socket.emit("authentication", {
-        token: JSON.parse(localStorage.getItem("token") || ""),
-      });
+      socket.emit(
+        "user:authentication",
+        JSON.parse(localStorage.getItem("token") || ""),
+        (data: unknown) => {
+          console.log("Authenticated successfully:", data);
+        },
+      ); /*
       socket.on("authentication", (data) => {
         console.log("Authenticated successfully:", data);
-      });
+      });*/
     }
   }, [socket]);
   return (
