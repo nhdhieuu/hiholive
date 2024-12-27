@@ -17,14 +17,16 @@ import {
 import { ChannelSettingModal } from "@/layouts/user/components/ChannelSettingModal.tsx";
 import { StreamDialog } from "./StreamDialog.tsx";
 import { SearchBar } from "@/layouts/user/components/SearchBar.tsx";
+import { useUserProfile } from "@/stores/useUserProfile.ts";
 
 export const TopBar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showChannelDialog, setShowChannelDialog] = useState<boolean>(false);
   const [showStreamDialog, setShowStreamDialog] = useState<boolean>(false);
-
+  const { userProfile } = useUserProfile();
   useEffect(() => {
+    console.log("Userprofile: ", userProfile);
     const auth = localStorage.getItem("token");
     console.log("auth", auth);
     if (auth && auth.length > 0) {
@@ -77,7 +79,9 @@ export const TopBar = () => {
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium">nhdhieuu</p>
+                      <p className="text-sm font-medium">
+                        {userProfile?.first_name} {userProfile?.last_name}
+                      </p>
                     </div>
                   </div>
                   <DropdownMenuSeparator />

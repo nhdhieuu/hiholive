@@ -13,10 +13,11 @@ import { Button } from "@/components/ui/button.tsx";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { authenticate } from "@/pages/login/api/authenticate.ts";
+import { authenticate, getProfile } from "@/pages/login/api/authenticate.ts";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import { SOCKET_BASE_URL } from "@/common/constant.ts";
+import { useUserProfile } from "@/stores/useUserProfile.ts";
 
 // Define validation schema
 const formSchema = z.object({
@@ -37,6 +38,7 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { setUserProfile } = useUserProfile();
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,6 +66,8 @@ export default function LoginPage() {
       );
       console.log("token", localStorage.getItem("token"));
       const token = localStorage.getItem("token");
+      const profileResponse = await getProfile();
+      setUserProfile(profileResponse.data);
 
       //socket-io
       if (token) {

@@ -10,7 +10,13 @@ interface UserProfileState {
 }
 
 export const useUserProfile = create<UserProfileState>((set) => ({
-  userProfile: null,
-  setUserProfile: (profile: UserProfile) => set({ userProfile: profile }),
-  clearUserProfile: () => set({ userProfile: null }),
+  userProfile: JSON.parse(localStorage.getItem("userProfile") || "null"),
+  setUserProfile: (profile: UserProfile) => {
+    localStorage.setItem("userProfile", JSON.stringify(profile));
+    set({ userProfile: profile });
+  },
+  clearUserProfile: () => {
+    localStorage.removeItem("userProfile");
+    set({ userProfile: null });
+  },
 }));
