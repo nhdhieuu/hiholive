@@ -7,6 +7,7 @@ import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 import { useNavigate } from "react-router-dom";
 import { useSocketStore } from "@/stores/useSocket";
+import { Users } from "lucide-react";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
@@ -99,11 +100,10 @@ export default function StreamingPage() {
 
               {/* Action buttons */}
               <div className="flex items-center gap-2">
-                {/*<div className="flex items-center gap-1 text-sm">
+                <div className="flex items-center gap-1 text-sm">
                   <Users className="w-4 h-4" />
                   <span>34</span>
                 </div>
-                <span className="text-sm text-zinc-400">0:53:31</span>*/}
                 <Button className="bg-purple-600 hover:bg-purple-700">
                   Follow
                 </Button>

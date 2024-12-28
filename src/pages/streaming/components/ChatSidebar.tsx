@@ -69,7 +69,14 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
 
   useEffect(() => {
     fetchChatData();
-  }, []); // Only depend on streamId and socket
+    return () => {
+      if (socket) {
+        socket.emit("stream:leave", streamId, (data: unknown) => {
+          console.log("Leave stream:", data);
+        });
+      }
+    };
+  }, []);
 
   const handleSend = () => {
     if (token) {

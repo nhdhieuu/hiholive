@@ -1,17 +1,34 @@
 import HomeStreamCard from "@/pages/home/components/HomeStreamCard.tsx";
 import ShowMoreDivider from "@/pages/home/components/ShowMoreDivider.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CategoryCard from "@/pages/home/components/CategoryCard.tsx";
+import { getListStream } from "./api/homeApi";
+import { Stream } from "@/types/stream.ts";
 
 export default function HomePage() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [isShowMoreSection2, setIsShowMoreSection2] = useState(false);
+  const [streams, setStreams] = useState<Stream[]>([]);
+
   const handleShowMore = () => {
     setIsShowMore(!isShowMore);
   };
   const handleShowMoreSection2 = () => {
     setIsShowMoreSection2(!isShowMoreSection2);
   };
+  useEffect(() => {
+    const fetchStreams = async () => {
+      try {
+        const data = await getListStream({ state: "", limit: 10 });
+        console.log("Data:", data);
+        setStreams(data.data);
+      } catch (error) {
+        console.error("Error fetching streams:", error);
+      }
+    };
+
+    fetchStreams();
+  }, []);
   const categoryMockData = [
     {
       title: "League of Legends",
@@ -71,22 +88,18 @@ export default function HomePage() {
       {/*SECTION*/}
       <div className={"flex flex-col gap-2"}>
         <h1 className={"text-2xl font-bold"}>
-          Live channel we think you’ll like
+          Các kênh trực tiếp chúng tôi nghĩ bạn sẽ thích
         </h1>
-        <div className={"flex gap-4 "}>
-          <HomeStreamCard />
-          <HomeStreamCard />
-          <HomeStreamCard />
-          <HomeStreamCard />
-          <HomeStreamCard />
+        <div className="grid grid-cols-5 gap-4">
+          {streams.slice(0, 5).map((stream) => (
+            <HomeStreamCard key={stream.id} streamData={stream} />
+          ))}
         </div>
         {isShowMore && (
-          <div className={"flex gap-4"}>
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
+          <div className="grid grid-cols-5 gap-4">
+            {streams.slice(5, 11).map((stream) => (
+              <HomeStreamCard key={stream.id} streamData={stream} />
+            ))}
           </div>
         )}
         <ShowMoreDivider
@@ -96,21 +109,17 @@ export default function HomePage() {
       </div>
       {/*SECTION*/}
       <div className={"flex flex-col gap-2"}>
-        <h1 className={"text-2xl font-bold"}>Just Chatting & IRL Streams</h1>
-        <div className={"flex gap-4 "}>
-          <HomeStreamCard />
-          <HomeStreamCard />
-          <HomeStreamCard />
-          <HomeStreamCard />
-          <HomeStreamCard />
+        <h1 className={"text-2xl font-bold"}>League Of Legends</h1>
+        <div className="grid grid-cols-5 gap-4">
+          {streams.slice(0, 5).map((stream) => (
+            <HomeStreamCard key={stream.id} streamData={stream} />
+          ))}
         </div>
         {isShowMoreSection2 && (
-          <div className={"flex gap-4"}>
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
-            <HomeStreamCard />
+          <div className="grid grid-cols-5 gap-4">
+            {streams.slice(5, 11).map((stream) => (
+              <HomeStreamCard key={stream.id} streamData={stream} />
+            ))}
           </div>
         )}
         <ShowMoreDivider
@@ -121,7 +130,7 @@ export default function HomePage() {
       {/*SECTION*/}
       <div className={"overflow-hidden w-full flex flex-col gap-2"}>
         <h1 className={"text-2xl font-bold"}>
-          Categories we think you’ll like
+          Các danh mục chúng tôi nghĩ bạn sẽ thích
         </h1>
         <div className="flex gap-4">
           {categoryMockData.map((data, index) => (

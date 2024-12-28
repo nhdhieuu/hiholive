@@ -2,8 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Stream } from "@/types/stream.ts";
 
-export default function HomeStreamCard() {
+interface HomeStreamCardProps {
+  streamData: Stream;
+}
+
+export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
   const navigate = useNavigate();
   return (
     <Card
@@ -41,11 +46,14 @@ export default function HomeStreamCard() {
             <AvatarFallback>TW</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h3 className="line-clamp-1 font-semibold">
-              🚨 EXCLUSIVE DROP - AK47 BLUE GEM
-            </h3>
-            <p className="text-sm text-muted-foreground">Trainwreckstv</p>
-            <p className="text-sm text-muted-foreground">Rust</p>
+            <h3 className="line-clamp-1 font-semibold">{streamData.title}</h3>
+            <p className="text-sm text-muted-foreground">
+              {streamData.channel.displayName}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {streamData.category.name}
+            </p>
+            <p className="text-sm text-muted-foreground">{streamData.id}</p>
           </div>
         </div>
       </CardContent>
