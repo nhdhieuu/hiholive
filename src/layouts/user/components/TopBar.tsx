@@ -24,7 +24,7 @@ export const TopBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showChannelDialog, setShowChannelDialog] = useState<boolean>(false);
   const [showStreamDialog, setShowStreamDialog] = useState<boolean>(false);
-  const { userProfile } = useUserProfile();
+  const { userProfile, clearUserProfile } = useUserProfile();
   useEffect(() => {
     console.log("Userprofile: ", userProfile);
     const auth = localStorage.getItem("token");
@@ -37,6 +37,8 @@ export const TopBar = () => {
   }, []);
   const handlelogout = () => {
     localStorage.removeItem("token");
+    window.location.reload();
+    clearUserProfile();
     setIsLoggedIn(false);
   };
   return (

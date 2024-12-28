@@ -6,6 +6,8 @@ import CommentTag from "@/pages/streaming/components/CommentTag.tsx";
 import { useSocketStore } from "@/stores/useSocket.ts";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Paging } from "@/types/paging.ts";
+import { toast } from "react-toastify";
+import { useUserProfile } from "@/stores/useUserProfile.ts";
 
 interface MessageResponse {
   createdAt: string;
@@ -15,8 +17,8 @@ interface MessageResponse {
   updatedAt: string;
   user: {
     id: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
   };
 }
 
@@ -33,6 +35,8 @@ function convertToTime(isoString: string) {
 
 export function ChatSidebar({ streamId }: ChatSidebarProps) {
   const { socket } = useSocketStore();
+  const { userProfile } = useUserProfile();
+  const token = localStorage.getItem("token");
   const [messages, setMessages] = useState<MessageResponse[]>([]);
   const [paging, setPaging] = useState<Paging>({
     limit: 100,
@@ -40,17 +44,11 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
     total: 0,
   });
   const [newMessage, setNewMessage] = useState("");
-  const [hasMore, setHasMore] = useState(true);
+  /*const [hasMore, setHasMore] = useState(true);*/
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const fetchChatData = () => {
     if (socket) {
-      console.log({
-        filter: {
-          streamId: streamId,
-        },
-        paging: paging,
-      });
       socket.emit(
         "chat:list",
         {
@@ -70,39 +68,49 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
   };
 
   useEffect(() => {
-    console.log("messages before: ", messages);
     fetchChatData();
-    console.log("messages AFTER: ", messages);
-  });
+  }, []); // Only depend on streamId and socket
 
   const handleSend = () => {
-    if (newMessage.trim()) {
-      const currentTime = new Date().toLocaleTimeString("en-US", {
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      if (socket) {
-        socket.emit("chat:create", newMessage, (data: unknown) => {
-          console.log("Sent message:", data);
+    if (token) {
+      if (newMessage.trim()) {
+        const currentTime = new Date().toLocaleTimeString("en-US", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
         });
-      }
+        if (socket) {
+          socket.emit("chat:create", newMessage, (data: unknown) => {
+            console.log("Sent message:", data);
+          });
+        }
 
-      setMessages([
-        ...messages,
-        {
-          createdAt: currentTime,
-          messageId: "nhdieuu",
-          message: newMessage.trim(),
-          streamId,
-          updatedAt: currentTime,
-          user: {
-            id: "1",
-            firstName: "User",
-            lastName: "Name",
+        setMessages([
+          ...messages,
+          {
+            createdAt: currentTime,
+            messageId: "nhdieuu",
+            message: newMessage.trim(),
+            streamId,
+            updatedAt: currentTime,
+            user: {
+              id: "1",
+              firstName: userProfile?.first_name,
+              lastName: userProfile?.last_name,
+            },
           },
-        },
-      ]);
+        ]);
+        setNewMessage("");
+      }
+    } else {
+      toast.error("Vui lòng đăng nhập!", {
+        position: "top-right",
+        autoClose: 3000, // Tự động đóng sau 3 giây
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       setNewMessage("");
     }
   };
@@ -114,7 +122,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
     }
   };
 
-  const fetchMoreData = () => {
+  /*const fetchMoreData = () => {
     if (socket) {
       socket.emit("chat:list", {
         filter: {
@@ -140,7 +148,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
         },
       );
     }
-  };
+  };*/
 
   return (
     <div className="w-80 bg-white p-4 flex flex-col ">
@@ -149,22 +157,28 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
           style={{ display: "flex", flexDirection: "column-reverse" }}
           dataLength={messages.length}
           height={700}
-          next={fetchMoreData}
-          hasMore={hasMore}
+          next={() => {}}
+          hasMore={false}
           loader={<h4>Loading...</h4>}
-          endMessage={<p style={{ textAlign: "center" }}>No more messages</p>}
+          endMessage={<div></div>}
           className="flex-1 overflow-y-scroll max-h-[700px] "
         >
           <div className="space-y-4 mb-4">
             <div className="space-y-2">
-              {messages.map((message, index) => (
-                <CommentTag
-                  key={index}
-                  date={convertToTime(message.createdAt)}
-                  username={`${message.user.firstName} ${message.user.lastName}`}
-                  content={message.message}
-                />
-              ))}
+              {messages.length === 0 ? (
+                <p style={{ textAlign: "center", alignContent: "center" }}>
+                  Chưa có tin nhắn
+                </p>
+              ) : (
+                messages.map((message, index) => (
+                  <CommentTag
+                    key={index}
+                    date={convertToTime(message.createdAt)}
+                    username={`${message.user.firstName} ${message.user.lastName}`}
+                    content={message.message}
+                  />
+                ))
+              )}
               <div ref={messagesEndRef} />
             </div>
           </div>
@@ -176,7 +190,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="Type a message..."
+          placeholder="Nhập tin nhắn..."
           className="resize-none"
           rows={1}
         />

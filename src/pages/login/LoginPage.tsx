@@ -83,6 +83,7 @@ export default function LoginPage() {
       }
 
       navigate("/");
+      window.location.reload();
       // Handle success (e.g., save token, navigate to dashboard)
     } catch (error) {
       console.log(error);

@@ -4,16 +4,15 @@ import { SOCKET_BASE_URL } from "@/common/constant.ts";
 
 interface SocketState {
   socket: Socket | null;
-  // eslint-disable-next-line no-unused-vars
-  setSocket: (token: string) => void;
+
+  setSocket: () => void;
 }
 
 export const useSocketStore = create<SocketState>((set) => ({
   socket: null,
-  setSocket: (token: string) => {
+  setSocket: () => {
     const newSocket = io(SOCKET_BASE_URL, {
       transports: ["websocket"],
-      query: { token },
     });
 
     newSocket.on("connect", () => {

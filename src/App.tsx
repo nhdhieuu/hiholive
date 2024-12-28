@@ -6,26 +6,20 @@ import { useSocketStore } from "./stores/useSocket";
 
 function App() {
   const { socket, setSocket } = useSocketStore();
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setSocket(token);
-    }
+    setSocket();
   }, [setSocket]);
 
   useEffect(() => {
     if (socket) {
       socket.emit(
         "user:authentication",
-        JSON.parse(localStorage.getItem("token") || ""),
+        JSON.parse(token as string),
         (data: unknown) => {
           console.log("Authenticated successfully:", data);
         },
-      ); /*
-      socket.on("authentication", (data) => {
-        console.log("Authenticated successfully:", data);
-      });*/
+      );
     }
   }, [socket]);
   return (
