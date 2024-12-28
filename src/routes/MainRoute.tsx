@@ -18,7 +18,7 @@ export const MainRoute = () => {
         <Route path="signup" element={<SignUpPage />} />
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/streaming" element={<StreamingPage />} />
+          <Route path="/streaming/:id" element={<StreamingPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/channel" element={<ChannelPage />} />
         </Route>

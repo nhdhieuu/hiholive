@@ -2,17 +2,25 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSocketStore } from "@/stores/useSocket";
 import { Users } from "lucide-react";
+import { StreamDetailResponseData } from "@/types/streamDetail.ts";
+import { getStreamDetail } from "./api/streamApi";
+import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const playerRef = useRef<Player | null>(null);
   const { socket } = useSocketStore();
+  const { id } = useParams<{ id: string }>();
+  const [streamDetail, setStreamDetail] =
+    useState<StreamDetailResponseData | null>(null);
+
   const videoJsOptions = {
     autoplay: true,
     controls: true,
@@ -49,14 +57,32 @@ export default function StreamingPage() {
       videojs.log("player will dispose");
     });
   };
-
+  const fetchStreamDetail = async (id: string) => {
+    try {
+      const data = await getStreamDetail(id);
+      console.log("Data:", data);
+      setStreamDetail(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching streams:", error);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      fetchStreamDetail(id);
+    }
+  }, []);
   useEffect(() => {
     if (socket) {
       socket.emit("stream:view", "DTHXLnQHZ1PbtV2", (data: unknown) => {
         console.log("Join Streamchat successfully", data);
       });
     }
-  }, [socket]);
+  }, [socket, id]);
+
+  if (loading) {
+    return <LoadingAnimation />;
+  }
   return (
     <div className="max-h-screen">
       {/* Main content area */}
@@ -91,10 +117,15 @@ export default function StreamingPage() {
                       navigate("/channel");
                     }}
                   >
-                    Cao Hoàng
+                    {streamDetail?.channel?.displayName || "Unknown Channel"}
                   </h1>
-                  <p className="text-sm ">Stream name</p>
-                  <p className="text-sm ">League of Legends</p>
+                  <p className="text-sm ">
+                    {streamDetail?.title || "Untitled"}
+                  </p>
+                  <p className="text-sm ">
+                    {" "}
+                    {streamDetail?.category?.name || "Unknown Category"}
+                  </p>
                 </div>
               </div>
 
@@ -112,7 +143,9 @@ export default function StreamingPage() {
 
             {/* About section */}
             <div className="mt-8">
-              <h2 className="text-lg font-semibold mb-4">About Cao Hoàng</h2>
+              <h2 className="text-lg font-semibold mb-4">
+                Giới thiệu {streamDetail?.channel?.displayName}
+              </h2>
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-sm font-medium">2.6K followers</span>
               </div>
@@ -125,7 +158,7 @@ export default function StreamingPage() {
         </div>
 
         {/* Chat sidebar */}
-        <ChatSidebar streamId={"DTHXLnQHZ1PbtV2"}></ChatSidebar>
+        <ChatSidebar streamId={streamDetail?.id || ""}></ChatSidebar>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
     <Card
       className="w-full overflow-hidden bg-background hover:bg-gray-50"
       onClick={() => {
-        navigate("/streaming");
+        navigate(`/streaming/${streamData.id}`);
       }}
     >
       {/* Stream Preview Section */}
@@ -51,7 +51,7 @@ export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
               {streamData.channel.displayName}
             </p>
             <p className="text-sm text-muted-foreground">
-              {streamData.category.name}
+              {streamData.category?.name || "Unknown Category"}
             </p>
             <p className="text-sm text-muted-foreground">{streamData.id}</p>
           </div>
