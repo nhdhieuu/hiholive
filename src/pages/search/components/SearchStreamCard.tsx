@@ -3,8 +3,13 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar.tsx";
+import { Stream } from "@/types/stream.ts";
 
-export default function SearchStreamCard() {
+interface SearchStreamCardProps {
+  data: Stream;
+}
+
+export default function SearchStreamCard({ data }: SearchStreamCardProps) {
   return (
     <div className="flex items-start gap-4 p-4 bg-background rounded-lg hover:bg-accent/50 transition-colors cursor-pointer max-w-2xl">
       {/* Thumbnail Section */}
@@ -30,16 +35,18 @@ export default function SearchStreamCard() {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
-            <h3 className="font-medium text-base">Cao Hoàng</h3>
-            <p className="text-sm text-muted-foreground">League of legends</p>
+            <h3 className="font-medium text-base">
+              {data.channel.displayName}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {data.category?.name || "Unknown Category"}
+            </p>
           </div>
         </div>
 
         <div className="mt-1">
           <p className="text-sm text-muted-foreground mb-2">7 người xem</p>
-          <p className="text-sm text-muted-foreground mb-2">
-            cozy Stream✨ | !bubbles !supervive
-          </p>
+          <p className="text-sm text-muted-foreground mb-2">{data.title}</p>
         </div>
       </div>
     </div>

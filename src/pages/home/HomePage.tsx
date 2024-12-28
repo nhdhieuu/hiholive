@@ -4,29 +4,30 @@ import { useEffect, useState } from "react";
 import CategoryCard from "@/pages/home/components/CategoryCard.tsx";
 import { getListStream } from "./api/homeApi";
 import { Stream } from "@/types/stream.ts";
+import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
 
 export default function HomePage() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [isShowMoreSection2, setIsShowMoreSection2] = useState(false);
   const [streams, setStreams] = useState<Stream[]>([]);
-
+  const [loading, setLoading] = useState(true);
   const handleShowMore = () => {
     setIsShowMore(!isShowMore);
   };
   const handleShowMoreSection2 = () => {
     setIsShowMoreSection2(!isShowMoreSection2);
   };
+  const fetchStreams = async () => {
+    try {
+      const data = await getListStream({ state: "", limit: 10 });
+      console.log("Data:", data);
+      setStreams(data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching streams:", error);
+    }
+  };
   useEffect(() => {
-    const fetchStreams = async () => {
-      try {
-        const data = await getListStream({ state: "", limit: 10 });
-        console.log("Data:", data);
-        setStreams(data.data);
-      } catch (error) {
-        console.error("Error fetching streams:", error);
-      }
-    };
-
     fetchStreams();
   }, []);
   const categoryMockData = [
@@ -82,7 +83,9 @@ export default function HomePage() {
         "https://static-cdn.jtvnw.net/ttv-boxart/2011938005_IGDB-188x250.jpg",
     },
   ];
-
+  if (loading) {
+    return <LoadingAnimation />;
+  }
   return (
     <div className={" h-full max-w-full flex flex-col p-5"}>
       {/*SECTION*/}
