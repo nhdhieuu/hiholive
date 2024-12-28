@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye } from "lucide-react";
@@ -47,14 +46,6 @@ export default function HomeStreamCard() {
             </h3>
             <p className="text-sm text-muted-foreground">Trainwreckstv</p>
             <p className="text-sm text-muted-foreground">Rust</p>
-            <div className="mt-2 flex gap-2">
-              <Badge variant="secondary" className="rounded-full">
-                DropsEnabled
-              </Badge>
-              <Badge variant="secondary" className="rounded-full">
-                English
-              </Badge>
-            </div>
           </div>
         </div>
       </CardContent>

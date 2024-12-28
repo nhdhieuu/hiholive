@@ -40,17 +40,6 @@ export default function SearchStreamCard() {
           <p className="text-sm text-muted-foreground mb-2">
             cozy Stream✨ | !bubbles !supervive
           </p>
-          <div className="flex flex-wrap gap-2">
-            <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">
-              123
-            </span>
-            <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">
-              Weiblich
-            </span>
-            <span className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">
-              Cats
-            </span>
-          </div>
         </div>
       </div>
     </div>

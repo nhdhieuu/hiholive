@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoJS } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
@@ -95,30 +94,6 @@ export default function StreamingPage() {
                   </h1>
                   <p className="text-sm ">Stream name</p>
                   <p className="text-sm ">League of Legends</p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {[
-                      "English",
-                      "leagueoflegends",
-                      "Tournament",
-                      "League",
-                      "pro",
-                      "programing",
-                      "ProfessionalGamer",
-                      "EuropeanCircuit",
-                      "europeanleague",
-                      "Circuit",
-                    ].map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className="bg-gray-300 hover:bg-gray-200 "
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
                 </div>
               </div>
 
