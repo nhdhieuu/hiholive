@@ -53,6 +53,9 @@ export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
             <p className="text-sm text-muted-foreground">
               {streamData.category?.name || "Unknown Category"}
             </p>
+            <p className="text-sm text-muted-foreground">
+              {streamData.currentView} người xem
+            </p>
             <p className="text-sm text-muted-foreground">{streamData.id}</p>
           </div>
         </div>

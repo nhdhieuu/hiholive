@@ -58,7 +58,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
           paging: paging,
         },
         (data: { data: MessageResponse[]; paging: Paging }) => {
-          console.log(data);
+          console.log("Chat data:", data);
           const reverseList = [...data.data].reverse();
           setMessages(reverseList);
           setPaging(data.paging);

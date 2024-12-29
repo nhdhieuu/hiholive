@@ -32,6 +32,7 @@ export interface Stream {
   title: string;
   description: string;
   category: Category | null;
+  currentView: number;
   isRerun: boolean;
   state: string;
 }

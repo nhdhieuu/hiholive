@@ -7,10 +7,10 @@ import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocketStore } from "@/stores/useSocket";
-import { Users } from "lucide-react";
 import { StreamDetailResponseData } from "@/types/streamDetail.ts";
 import { getStreamDetail } from "./api/streamApi";
 import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
+import { ViewCount } from "./components/ViewCount";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export default function StreamingPage() {
   }, []);
   useEffect(() => {
     if (socket) {
-      socket.emit("stream:view", "DTHXLnQHZ1PbtV2", (data: unknown) => {
+      socket.emit("stream:view", id, (data: unknown) => {
         console.log("Join Streamchat successfully", data);
       });
     }
@@ -132,8 +132,7 @@ export default function StreamingPage() {
               {/* Action buttons */}
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1 text-sm">
-                  <Users className="w-4 h-4" />
-                  <span>34</span>
+                  <ViewCount streamId={streamDetail?.id || ""} />
                 </div>
                 <Button className="bg-purple-600 hover:bg-purple-700">
                   Follow

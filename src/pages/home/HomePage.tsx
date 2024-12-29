@@ -19,7 +19,7 @@ export default function HomePage() {
   };
   const fetchStreams = async () => {
     try {
-      const data = await getListStream({ state: "", limit: 10 });
+      const data = await getListStream({ state: "running", limit: 10 });
       console.log("Data:", data);
       setStreams(data.data);
       setLoading(false);
@@ -89,7 +89,7 @@ export default function HomePage() {
   return (
     <div className={" h-full max-w-full flex flex-col p-5"}>
       {/*SECTION*/}
-      <div className={"flex flex-col gap-2"}>
+      <div className={"flex flex-col gap-2 mb-1"}>
         <h1 className={"text-2xl font-bold"}>
           Các kênh trực tiếp chúng tôi nghĩ bạn sẽ thích
         </h1>
@@ -105,13 +105,15 @@ export default function HomePage() {
             ))}
           </div>
         )}
-        <ShowMoreDivider
-          onShowMore={handleShowMore}
-          isShowMore={isShowMore}
-        ></ShowMoreDivider>
+        {streams.length > 5 && (
+          <ShowMoreDivider
+            onShowMore={handleShowMore}
+            isShowMore={isShowMore}
+          ></ShowMoreDivider>
+        )}
       </div>
       {/*SECTION*/}
-      <div className={"flex flex-col gap-2"}>
+      <div className={"flex flex-col gap-2 mb-1"}>
         <h1 className={"text-2xl font-bold"}>League Of Legends</h1>
         <div className="grid grid-cols-5 gap-4">
           {streams.slice(0, 5).map((stream) => (
@@ -125,10 +127,12 @@ export default function HomePage() {
             ))}
           </div>
         )}
-        <ShowMoreDivider
-          onShowMore={handleShowMoreSection2}
-          isShowMore={isShowMoreSection2}
-        ></ShowMoreDivider>
+        {streams.length > 5 && (
+          <ShowMoreDivider
+            onShowMore={handleShowMoreSection2}
+            isShowMore={isShowMoreSection2}
+          ></ShowMoreDivider>
+        )}
       </div>
       {/*SECTION*/}
       <div className={"overflow-hidden w-full flex flex-col gap-2"}>
