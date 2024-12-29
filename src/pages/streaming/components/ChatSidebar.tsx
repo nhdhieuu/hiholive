@@ -161,7 +161,10 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
     <div className="w-80 bg-white p-4 flex flex-col ">
       <div className={"flex flex-col-reverse"}>
         <InfiniteScroll
-          style={{ display: "flex", flexDirection: "column-reverse" }}
+          style={{
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
           dataLength={messages.length}
           height={700}
           next={() => {}}

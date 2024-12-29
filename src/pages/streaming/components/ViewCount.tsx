@@ -21,7 +21,7 @@ export function ViewCount({ streamId }: ViewCountProps) {
     };
 
     fetchViewCount(); // Fetch initially
-    const interval = setInterval(fetchViewCount, 2000); // Fetch every 30 seconds
+    const interval = setInterval(fetchViewCount, 10000); // Fetch every 30 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [socket, streamId]);

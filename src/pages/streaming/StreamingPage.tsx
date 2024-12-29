@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { VideoJS } from "@/components/VideoJSPlayer.tsx";
+import { VideoJSPlayer } from "@/components/VideoJSPlayer.tsx";
 import videojs from "video.js";
 import { useEffect, useRef, useState } from "react";
 import Player from "video.js/dist/types/player";
@@ -26,18 +26,17 @@ export default function StreamingPage() {
     controls: true,
     responsive: true,
     fluid: true,
-    liveui: true,
     sources: [
       {
-        src: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.mp4/.m3u8",
+        src: "https://hls.hiholive.fun/DhfjhWg8x21g2vN/master.m3u8",
         type: "application/x-mpegURL",
       },
     ],
     controlBar: {
-      progressControl: false, // You can customize controlBar properties
-      remainingTimeDisplay: false,
-      durationDisplay: false,
-      currentTimeDisplay: false,
+      progressControl: true, // You can customize controlBar properties
+      remainingTimeDisplay: true,
+      durationDisplay: true,
+      currentTimeDisplay: true,
       volumePanel: true,
       playToggle: true,
       fullscreenToggle: true,
@@ -91,7 +90,10 @@ export default function StreamingPage() {
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
           <div className="w-full">
-            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+            <VideoJSPlayer
+              options={videoJsOptions}
+              onReady={handlePlayerReady}
+            />
           </div>
 
           {/* Channel info section */}

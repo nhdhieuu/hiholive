@@ -19,7 +19,7 @@ interface VideoJSProps {
   onReady?: (player: Player) => void;
 }
 
-export const VideoJS = ({ options, onReady }: VideoJSProps) => {
+export const VideoJSPlayer = ({ options, onReady }: VideoJSProps) => {
   const videoRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<Player | null>(null);
 
@@ -43,7 +43,7 @@ export const VideoJS = ({ options, onReady }: VideoJSProps) => {
           },
           controlBar: {
             ...options.controlBar,
-            progressControl: false, // Hide progress bar
+            progressControl: true, // Hide progress bar
             remainingTimeDisplay: false, // Hide remaining time
             durationDisplay: false, // Hide duration
             currentTimeDisplay: false, // Hide current time
@@ -84,4 +84,4 @@ export const VideoJS = ({ options, onReady }: VideoJSProps) => {
   );
 };
 
-export default VideoJS;
+export default VideoJSPlayer;
