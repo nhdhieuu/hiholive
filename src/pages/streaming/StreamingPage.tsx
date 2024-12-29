@@ -28,7 +28,7 @@ export default function StreamingPage() {
     fluid: true,
     sources: [
       {
-        src: "https://hls.hiholive.fun/DhfjhWg8x21g2vN/master.m3u8",
+        src: "https://hls.hiholive.fun/DhiyDnSV31Fuwck/master.m3u8",
         type: "application/x-mpegURL",
       },
     ],

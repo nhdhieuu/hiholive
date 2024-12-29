@@ -9,6 +9,7 @@ import ChannelPage from "@/pages/channel/ChannelPage.tsx";
 import AdminLayout from "@/layouts/admin/AdminLayout.tsx";
 import { AdminSettingPage } from "@/pages/admin/setting/AdminSettingPage.tsx";
 import { AdminUserPage } from "@/pages/admin/user/AdminUserPage.tsx";
+import AdminCategoryPage from "@/pages/admin/category/AdminCategoryPage.tsx";
 
 export const MainRoute = () => {
   return (
@@ -28,7 +29,7 @@ export const MainRoute = () => {
 
           {/* Admin Sidebar with different routes */}
           <Route path="users" element={<AdminUserPage />} />
-          <Route path="categories" element={<div>Categories Page</div>} />
+          <Route path="categories" element={<AdminCategoryPage />} />
           <Route path="settings" element={<AdminSettingPage />} />
         </Route>
       </Routes>
