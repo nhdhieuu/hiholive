@@ -1,7 +1,10 @@
 import ChannelInfo from "./components/ChannelInfo.tsx";
 import ClipsSection from "./components/ClipSection";
+import { useParams } from "react-router-dom";
 
 export default function ChannelPage() {
+  const { id } = useParams<{ id: string }>();
+  console.log("Channel ID:", id);
   return (
     <div>
       {/* Main Content */}
