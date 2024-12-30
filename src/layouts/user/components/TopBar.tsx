@@ -18,12 +18,14 @@ import { ChannelSettingModal } from "@/layouts/user/components/ChannelSettingMod
 import { StreamDialog } from "./StreamDialog.tsx";
 import { SearchBar } from "@/layouts/user/components/SearchBar.tsx";
 import { useUserProfile } from "@/stores/useUserProfile.ts";
+import { ProfileSettingModal } from "@/layouts/user/components/ProfileSettingModal.tsx";
 
 export const TopBar = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showChannelDialog, setShowChannelDialog] = useState<boolean>(false);
   const [showStreamDialog, setShowStreamDialog] = useState<boolean>(false);
+  const [showSettingDialog, setShowSettingDialog] = useState<boolean>(false);
   const { userProfile, clearUserProfile } = useUserProfile();
   useEffect(() => {
     console.log("Userprofile: ", userProfile);
@@ -93,7 +95,7 @@ export const TopBar = () => {
                       onSelect={() => setShowChannelDialog(true)}
                     >
                       <User className="mr-2 h-4 w-4" />
-                      <span>Kênh</span>
+                      <span>Tạo kênh</span>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem
@@ -104,9 +106,13 @@ export const TopBar = () => {
                     <Video className="mr-2 h-4 w-4" />
                     <span>Trình tạo Stream</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      setShowSettingDialog(true);
+                    }}
+                  >
                     <Settings className="mr-2 h-4 w-4" />
-                    <span>Cài đặt</span>
+                    <span>Cài đặt tài khoản</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Globe className="mr-2 h-4 w-4" />
@@ -129,6 +135,10 @@ export const TopBar = () => {
               <StreamDialog
                 isOpen={showStreamDialog}
                 onOpenChange={setShowStreamDialog}
+              />
+              <ProfileSettingModal
+                isOpen={showSettingDialog}
+                onOpenChange={setShowSettingDialog}
               />
             </div>
           ) : (

@@ -22,6 +22,7 @@ export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
     controls: true,
     responsive: true,
     fluid: true,
+    muted: true,
     sources: [
       {
         src: "https://hls.hiholive.fun/DhiyDnSV31Fuwck/master.m3u8",
