@@ -1,6 +1,6 @@
 import { Paging } from "@/types/paging.ts";
 import axiosInstance from "@/axiosSetup.ts";
-import { User } from "@/types/User.ts";
+import { User } from "@/types/user.ts";
 
 interface AdminUserResponse {
   data: User[];

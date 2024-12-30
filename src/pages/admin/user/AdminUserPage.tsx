@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronUp, MoreHorizontal } from "lucide-react";
-import { User } from "@/types/User";
+import { User } from "@/types/user.ts";
 import { getUsers } from "@/pages/admin/user/api/adminUserApi.ts";
 
 export function AdminUserPage() {
