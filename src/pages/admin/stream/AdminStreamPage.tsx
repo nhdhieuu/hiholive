@@ -20,220 +20,49 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronUp, MoreHorizontal } from "lucide-react";
-
-interface User {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  phone_number: string;
-  address: string;
-  first_name: string;
-  last_name: string;
-  user_name: string;
-  display_name: string;
-  date_of_birth: string;
-  gender: string;
-  SystemRole: string;
-  avatar: string | null;
-  bio: string;
-  status: number;
-}
-
-const mockData = {
-  data: [
-    {
-      id: "3zMaR7yQ7nShFn",
-      createdAt: "2024-12-30T18:48:27Z",
-      updatedAt: "2024-12-30T18:48:27Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer11qirJL",
-      display_name: "streamer11qirJL",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3zL5mZusPZoVpp",
-      createdAt: "2024-12-30T18:13:49Z",
-      updatedAt: "2024-12-30T18:13:49Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer10XGBnE",
-      display_name: "streamer10XGBnE",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3wAGG4YCznbDRS",
-      createdAt: "2024-12-30T10:42:55Z",
-      updatedAt: "2024-12-30T10:42:55Z",
-      phone_number: "",
-      address: "",
-      first_name: "Nguyen",
-      last_name: "Hieu",
-      user_name: "",
-      display_name: "nhdhieuu123+ryZyQ",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3w84JgKXLr9Bcn",
-      createdAt: "2024-12-27T09:21:35Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "Nguyen",
-      last_name: "Hieu",
-      user_name: "nhdhieuu",
-      display_name: "nhdhieuu",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3w5rMFyrnAbduY",
-      createdAt: "2024-12-26T08:12:51Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer7",
-      display_name: "streamer7",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "streamer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3w4MYPEbhfVWdv",
-      createdAt: "2024-12-26T13:23:54Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer5",
-      display_name: "streamer5",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3stY2uxxbtZiHa",
-      createdAt: "2024-12-26T13:23:14Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer4",
-      display_name: "streamer4",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3srL5VdmuD51Fn",
-      createdAt: "2024-12-26T12:56:56Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer3",
-      display_name: "streamer3",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "streamer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3spqRwaipTug98",
-      createdAt: "2024-12-26T12:29:22Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer2",
-      display_name: "streamer2",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-    {
-      id: "3pf1vSCanEe9xi",
-      createdAt: "2024-12-26T05:14:21Z",
-      updatedAt: "2024-12-28T10:10:07Z",
-      phone_number: "",
-      address: "",
-      first_name: "cao",
-      last_name: "Hoang",
-      user_name: "streamer1",
-      display_name: "streamer1",
-      date_of_birth: "",
-      gender: "other",
-      SystemRole: "viewer",
-      avatar: null,
-      bio: "",
-      status: 1,
-    },
-  ],
-};
+import { Stream } from "@/types/stream";
+import { getAdminStreams } from "@/pages/admin/stream/api/adminStreamApi.ts";
 
 export default function AdminStreamPage() {
-  const [users, setUsers] = useState<User[]>(mockData.data);
   const [searchTerm, setSearchTerm] = useState("");
+  const [paging, setPaging] = useState(1);
+  const [streams, setStreams] = useState<Stream[]>([]);
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof User;
+    key: keyof Stream;
     direction: "asc" | "desc";
   } | null>(null);
 
+  async function fetchStreams() {
+    try {
+      const response = await getAdminStreams(paging);
+      console.log("response: ", response);
+      setStreams(response.data);
+    } catch (error) {
+      console.error("Failed to fetch streams: ", error);
+    }
+  }
+
   useEffect(() => {
-    const filteredUsers = mockData.data.filter(
-      (user) =>
-        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.display_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.SystemRole.toLowerCase().includes(searchTerm.toLowerCase()),
+    fetchStreams();
+  }, [paging]);
+
+  useEffect(() => {
+    const filteredStreams = streams.filter(
+      (stream) =>
+        stream.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        stream.channel.displayName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        stream.state.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        stream.category?.name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        stream.title.toLowerCase().includes(searchTerm.toLowerCase()),
     );
-    setUsers(filteredUsers);
+    setStreams(filteredStreams);
   }, [searchTerm]);
 
-  const handleSort = (key: keyof User) => {
+  const handleSort = (key: keyof Stream) => {
     let direction: "asc" | "desc" = "asc";
     if (
       sortConfig &&
@@ -244,7 +73,7 @@ export default function AdminStreamPage() {
     }
     setSortConfig({ key, direction });
 
-    const sortedUsers = [...users].sort((a, b) => {
+    const sortedStreams = [...streams].sort((a, b) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
@@ -253,10 +82,10 @@ export default function AdminStreamPage() {
       if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
       return 0;
     });
-    setUsers(sortedUsers);
+    setStreams(sortedStreams);
   };
 
-  const renderSortIcon = (key: keyof User) => {
+  const renderSortIcon = (key: keyof Stream) => {
     if (!sortConfig || sortConfig.key !== key) {
       return null;
     }
@@ -272,7 +101,7 @@ export default function AdminStreamPage() {
       <h1 className="text-2xl font-bold mb-5">Admin Stream Management</h1>
       <div className="flex justify-between items-center mb-4">
         <Input
-          placeholder="Search users..."
+          placeholder="Search streams..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
@@ -284,27 +113,33 @@ export default function AdminStreamPage() {
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead
               className="cursor-pointer"
-              onClick={() => handleSort("first_name")}
+              onClick={() => handleSort("title")}
             >
-              First Name {renderSortIcon("first_name")}
+              Title {renderSortIcon("title")}
             </TableHead>
             <TableHead
               className="cursor-pointer"
-              onClick={() => handleSort("last_name")}
+              onClick={() => handleSort("channel")}
             >
-              Last Name {renderSortIcon("last_name")}
+              Channel {renderSortIcon("channel")}
             </TableHead>
             <TableHead
               className="cursor-pointer"
-              onClick={() => handleSort("display_name")}
+              onClick={() => handleSort("category")}
             >
-              Display Name {renderSortIcon("display_name")}
+              Category {renderSortIcon("category")}
             </TableHead>
             <TableHead
               className="cursor-pointer"
-              onClick={() => handleSort("SystemRole")}
+              onClick={() => handleSort("currentView")}
             >
-              Role {renderSortIcon("SystemRole")}
+              Current Views {renderSortIcon("currentView")}
+            </TableHead>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleSort("state")}
+            >
+              State {renderSortIcon("state")}
             </TableHead>
             <TableHead
               className="cursor-pointer"
@@ -312,27 +147,21 @@ export default function AdminStreamPage() {
             >
               Created At {renderSortIcon("createdAt")}
             </TableHead>
-            <TableHead
-              className="cursor-pointer"
-              onClick={() => handleSort("status")}
-            >
-              Status {renderSortIcon("status")}
-            </TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell className="font-medium">{user.id}</TableCell>
-              <TableCell>{user.first_name}</TableCell>
-              <TableCell>{user.last_name}</TableCell>
-              <TableCell>{user.display_name}</TableCell>
-              <TableCell>{user.SystemRole}</TableCell>
+          {streams.map((stream) => (
+            <TableRow key={stream.id}>
+              <TableCell className="font-medium">{stream.id}</TableCell>
+              <TableCell>{stream.title}</TableCell>
+              <TableCell>{stream.channel.displayName}</TableCell>
+              <TableCell>{stream.category?.name || "N/A"}</TableCell>
+              <TableCell>{stream.currentView}</TableCell>
+              <TableCell>{stream.state}</TableCell>
               <TableCell>
-                {new Date(user.createdAt).toLocaleDateString()}
+                {new Date(stream.createdAt).toLocaleDateString()}
               </TableCell>
-              <TableCell>{user.status === 1 ? "Active" : "Inactive"}</TableCell>
               <TableCell className="text-right">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -344,14 +173,14 @@ export default function AdminStreamPage() {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem
-                      onClick={() => navigator.clipboard.writeText(user.id)}
+                      onClick={() => navigator.clipboard.writeText(stream.id)}
                     >
-                      Copy user ID
+                      Copy stream ID
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>View user details</DropdownMenuItem>
-                    <DropdownMenuItem>Edit user</DropdownMenuItem>
-                    <DropdownMenuItem>Delete user</DropdownMenuItem>
+                    <DropdownMenuItem>View stream details</DropdownMenuItem>
+                    <DropdownMenuItem>Edit stream</DropdownMenuItem>
+                    <DropdownMenuItem>End stream</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
@@ -359,6 +188,16 @@ export default function AdminStreamPage() {
           ))}
         </TableBody>
       </Table>
+      <div className="flex justify-between items-center mt-4">
+        <Button
+          onClick={() => setPaging((prev) => Math.max(prev - 1, 1))}
+          disabled={paging === 1}
+        >
+          Previous
+        </Button>
+        <span>Page {paging}</span>
+        <Button onClick={() => setPaging((prev) => prev + 1)}>Next</Button>
+      </div>
     </div>
   );
 }
