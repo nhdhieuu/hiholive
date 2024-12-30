@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/avatar.tsx";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea.tsx";
+import { uploadImg } from "../api/uploadImgApi";
 
 interface ChannelSettingModalProps {
   open: boolean;
@@ -29,7 +30,19 @@ export function ChannelSettingModal({
   onOpenChange,
 }: ChannelSettingModalProps) {
   const [avatar, setAvatar] = useState<string>("/placeholder.svg");
-
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const response = await uploadImg(file);
+        setAvatar(response.data.url);
+      } catch (error) {
+        console.error("Image upload failed:", error);
+      }
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
@@ -47,12 +60,17 @@ export function ChannelSettingModal({
                 variant="outline"
                 size="sm"
                 className="mb-2"
-                onClick={() =>
-                  setAvatar(prompt("Nhập URL ảnh hồ sơ mới:") || avatar)
-                }
+                onClick={() => document.getElementById("fileInput")?.click()}
               >
                 Thêm ảnh hồ sơ
               </Button>
+              <input
+                id="fileInput"
+                type="file"
+                accept="image/jpeg,image/png,image/gif"
+                className="hidden"
+                onChange={handleFileChange}
+              />
               <p className="text-xs text-muted-foreground">
                 Phải là ảnh định dạng JPEG, PNG hoặc GIF và không lớn hơn 10MB.
               </p>

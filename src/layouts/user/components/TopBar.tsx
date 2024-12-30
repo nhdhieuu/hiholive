@@ -87,10 +87,15 @@ export const TopBar = () => {
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onSelect={() => setShowChannelDialog(true)}>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Kênh</span>
-                  </DropdownMenuItem>
+
+                  {userProfile?.SystemRole === "viewer" && (
+                    <DropdownMenuItem
+                      onSelect={() => setShowChannelDialog(true)}
+                    >
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Kênh</span>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     onSelect={() => {
                       setShowStreamDialog(true);

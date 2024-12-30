@@ -132,7 +132,7 @@ export default function StreamingPage() {
                   <h1
                     className="text-xl font-semibold hover:underline"
                     onClick={() => {
-                      navigate("/channel");
+                      navigate(`/channel/${streamDetail?.channel.id}`);
                     }}
                   >
                     {streamDetail?.channel?.displayName || "Unknown Channel"}
