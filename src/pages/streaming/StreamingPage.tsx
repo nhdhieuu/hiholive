@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useRef, useState } from "react";
-import Player from "video.js/dist/types/player";
+import { useEffect, useState } from "react";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocketStore } from "@/stores/useSocket";
@@ -14,7 +13,7 @@ import StreamVideoJS from "@/components/StreamVideoJS.tsx";
 export default function StreamingPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const playerRef = useRef<Player | null>(null);
+  /*const playerRef = useRef<Player | null>(null);*/
   const { socket } = useSocketStore();
   const { id } = useParams<{ id: string }>();
   const [streamDetail, setStreamDetail] =

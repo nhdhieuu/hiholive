@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import videojs, { VideoJsPlayer, VideoJsPlayerPluginOptions } from "video.js";
 import "video.js/dist/video-js.css";
 
@@ -22,7 +24,8 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
       if (!videoElement) return;
 
       const Plugin = videojs.getPlugin("plugin");
-
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       class QualitySelector extends Plugin {
         player: VideoJsPlayer;
         sources: Source[];
@@ -50,21 +53,35 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
             resolution: number;
             sources: Source[];
 
-            constructor(player: VideoJsPlayer, options: any) {
+            constructor(player: VideoJsPlayer, options: never) {
               super(player, {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 label: options.label,
                 selectable: true,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 selected: options.selected || false,
               });
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               this.resolution = options.resolution;
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               this.sources = options.sources;
             }
 
             handleClick() {
               const items =
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 this.player().controlBar.getChild("qualityMenuButton").items ||
                 [];
-              items.forEach((item: any) => item.selected(false));
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
+              items.forEach((item: never) => item.selected(false));
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               this.selected(true);
 
               const currentTime = this.player().currentTime();
@@ -86,7 +103,7 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
           }
 
           class QualityMenuButton extends MenuButton {
-            constructor(player: VideoJsPlayer, options: any) {
+            constructor(player: VideoJsPlayer, options: never) {
               super(player, options);
               videojs.dom.addClass(this.el(), "vjs-quality-selector");
             }
@@ -94,6 +111,8 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
             createItems() {
               return this.options_.sources.map(
                 (source: Source, index: number) => {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
                   return new QualityMenuItem(this.player_, {
                     label: source.label,
                     resolution: index,

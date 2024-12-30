@@ -130,7 +130,7 @@ const mockData = {
 
 export default function AdminCategoryPage() {
   const [categories, setCategories] = useState<Category[]>(mockData.data);
-  const [paging, setPaging] = useState<PagingInfo>(mockData.paging);
+  const [paging] = useState<PagingInfo>(mockData.paging);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Category;
