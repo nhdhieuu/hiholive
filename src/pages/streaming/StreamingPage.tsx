@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { VideoJSPlayer } from "@/components/VideoJSPlayer.tsx";
-import videojs from "video.js";
 import { useEffect, useRef, useState } from "react";
 import Player from "video.js/dist/types/player";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
@@ -11,6 +9,7 @@ import { StreamDetailResponseData } from "@/types/streamDetail.ts";
 import { getStreamDetail } from "./api/streamApi";
 import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
 import { ViewCount } from "./components/ViewCount";
+import StreamVideoJS from "@/components/StreamVideoJS.tsx";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ export default function StreamingPage() {
   const [streamDetail, setStreamDetail] =
     useState<StreamDetailResponseData | null>(null);
 
-  const videoJsOptions = {
+  /*const videoJsOptions = {
     autoplay: true,
     controls: true,
     responsive: true,
@@ -41,9 +40,9 @@ export default function StreamingPage() {
       playToggle: true,
       fullscreenToggle: true,
     },
-  };
+  };*/
 
-  // Type 'player' parameter explicitly as 'Player'
+  /*// Type 'player' parameter explicitly as 'Player'
   const handlePlayerReady = (player: Player) => {
     playerRef.current = player;
 
@@ -55,7 +54,7 @@ export default function StreamingPage() {
     player.on("dispose", () => {
       videojs.log("player will dispose");
     });
-  };
+  };*/
   const fetchStreamDetail = async (id: string) => {
     try {
       const data = await getStreamDetail(id);
@@ -66,6 +65,23 @@ export default function StreamingPage() {
       console.error("Error fetching streams:", error);
     }
   };
+  const videoSources = [
+    {
+      src: "https://hls.hiholive.fun/DhiyDnSV31Fuwck/master.m3u8",
+      type: "application/x-mpegURL",
+      label: "auto",
+    },
+    {
+      src: "https://hls.hiholive.fun/DhiyDnSV31Fuwck/index-1080p60.m3u8",
+      type: "application/x-mpegURL",
+      label: "1080",
+    },
+    {
+      src: "https://hls.hiholive.fun/DhiyDnSV31Fuwck/index-720p60.m3u8",
+      type: "application/x-mpegURL",
+      label: "720",
+    },
+  ];
   useEffect(() => {
     if (id) {
       fetchStreamDetail(id);
@@ -90,10 +106,11 @@ export default function StreamingPage() {
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
           <div className="w-full">
-            <VideoJSPlayer
+            {/*<VideoJSPlayer
               options={videoJsOptions}
               onReady={handlePlayerReady}
-            />
+            />*/}
+            <StreamVideoJS sources={videoSources} />
           </div>
 
           {/* Channel info section */}
