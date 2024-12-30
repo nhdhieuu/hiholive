@@ -10,6 +10,7 @@ import AdminLayout from "@/layouts/admin/AdminLayout.tsx";
 import { AdminSettingPage } from "@/pages/admin/setting/AdminSettingPage.tsx";
 import { AdminUserPage } from "@/pages/admin/user/AdminUserPage.tsx";
 import AdminCategoryPage from "@/pages/admin/category/AdminCategoryPage.tsx";
+import AdminStreamPage from "@/pages/admin/stream/AdminStreamPage.tsx";
 
 export const MainRoute = () => {
   return (
@@ -25,7 +26,7 @@ export const MainRoute = () => {
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           {/* This is the root of the admin path */}
-          <Route index element={<div>Welcome to Admin Panel</div>} />
+          <Route index element={<AdminStreamPage />} />
 
           {/* Admin Sidebar with different routes */}
           <Route path="users" element={<AdminUserPage />} />
