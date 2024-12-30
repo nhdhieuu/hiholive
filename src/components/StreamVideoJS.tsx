@@ -142,6 +142,7 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
         controls: true,
         fluid: true,
         responsive: true,
+        autoplay: true, // Added autoplay option
         plugins: {
           qualitySelector: {
             sources: sources,
