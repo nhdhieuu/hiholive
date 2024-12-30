@@ -20,125 +20,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronUp, MoreHorizontal, Plus } from "lucide-react";
-
-interface Category {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  description: string;
-  image: {
-    id: number;
-    url: string;
-    width: number;
-    height: number;
-    cloud_name: string;
-    extension: string;
-  };
-  status: number;
-  totalContent: number;
-}
-
-interface PagingInfo {
-  limit: number;
-  page: number;
-  total: number;
-  cursor: string;
-  next_cursor: string;
-}
-
-const mockData = {
-  data: [
-    {
-      id: "3mHP8w6PgAi8Sz",
-      createdAt: "2024-12-28T13:26:46Z",
-      updatedAt: "2024-12-28T08:53:22Z",
-      name: "Just chatting",
-      description: "HEHE",
-      image: {
-        id: 0,
-        url: "https://static.hiholive.fun/category_image/937229338.jpg",
-        width: 272,
-        height: 380,
-        cloud_name: "s3",
-        extension: ".jpg",
-      },
-      status: 1,
-      totalContent: 7,
-    },
-    {
-      id: "iUwsZ9sqt1m2",
-      createdAt: "2024-12-28T13:24:58Z",
-      updatedAt: "2024-12-28T13:24:58Z",
-      name: "Genshin Impact",
-      description: "Are you a wibu??",
-      image: {
-        id: 0,
-        url: "https://static.hiholive.fun/avatar/647248237.jpg",
-        width: 1280,
-        height: 720,
-        cloud_name: "s3",
-        extension: ".jpg",
-      },
-      status: 1,
-      totalContent: 0,
-    },
-    {
-      id: "gGzTDy4u6f9e",
-      createdAt: "2024-12-28T13:23:41Z",
-      updatedAt: "2024-12-29T09:11:56Z",
-      name: "Valorant",
-      description: "Trash game too",
-      image: {
-        id: 0,
-        url: "https://static.hiholive.fun/avatar/794491342.jpeg",
-        width: 275,
-        height: 183,
-        cloud_name: "s3",
-        extension: ".jpeg",
-      },
-      status: 1,
-      totalContent: 32,
-    },
-    {
-      id: "e5351HQxedGk",
-      createdAt: "2024-12-28T13:20:10Z",
-      updatedAt: "2024-12-28T06:21:03Z",
-      name: "league of legend",
-      description: "Trash game",
-      image: {
-        id: 0,
-        url: "https://static.hiholive.fun/avatar/124348175.png",
-        width: 1439,
-        height: 541,
-        cloud_name: "s3",
-        extension: ".png",
-      },
-      status: 1,
-      totalContent: 0,
-    },
-  ],
-  paging: {
-    limit: 10,
-    page: 1,
-    total: 4,
-    cursor: "",
-    next_cursor: "e5351HQxedGk",
-  },
-  extra: {},
-};
+import { Category } from "@/types/category";
+import { getCategories } from "@/pages/admin/category/api/adminCategoryApi.ts";
 
 export default function AdminCategoryPage() {
-  const [categories, setCategories] = useState<Category[]>(mockData.data);
-  const [paging] = useState<PagingInfo>(mockData.paging);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [paging, setPaging] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Category;
     direction: "asc" | "desc";
   } | null>(null);
 
+  async function fetchCategories() {
+    try {
+      const response = await getCategories(paging);
+      console.log("response: ", response);
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Failed to fetch categories: ", error);
+    }
+  }
+
   useEffect(() => {
-    const filteredCategories = mockData.data.filter(
+    fetchCategories();
+  }, [paging]);
+
+  useEffect(() => {
+    const filteredCategories = categories.filter(
       (category) =>
         category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         category.description.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -177,7 +86,7 @@ export default function AdminCategoryPage() {
   };
 
   return (
-    <div className=" container px-2 py-2">
+    <div className="container px-2 py-2">
       <h1 className="text-2xl font-bold mb-5">Admin Category Management</h1>
       <div className="flex justify-between items-center mb-4">
         <Input
@@ -229,8 +138,8 @@ export default function AdminCategoryPage() {
                 <img
                   src={category.image.url}
                   alt={category.name}
-                  width={50}
-                  height={50}
+                  width={80}
+                  height={80}
                   className="rounded-md object-cover"
                 />
               </TableCell>
@@ -269,34 +178,15 @@ export default function AdminCategoryPage() {
           ))}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          Showing {paging.page} to{" "}
-          {Math.min(paging.page * paging.limit, paging.total)} of {paging.total}{" "}
-          categories
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              /* Implement previous page logic */
-            }}
-            disabled={paging.page === 1}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => {
-              /* Implement next page logic */
-            }}
-            disabled={paging.page * paging.limit >= paging.total}
-          >
-            Next
-          </Button>
-        </div>
+      <div className="flex justify-between items-center mt-4">
+        <Button
+          onClick={() => setPaging((prev) => Math.max(prev - 1, 1))}
+          disabled={paging === 1}
+        >
+          Previous
+        </Button>
+        <span>Page {paging}</span>
+        <Button onClick={() => setPaging((prev) => prev + 1)}>Next</Button>
       </div>
     </div>
   );
