@@ -168,7 +168,7 @@ export function AdminSettingPage() {
   };
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="  container px-2 py-2">
       <h1 className="text-2xl font-bold mb-5">Admin Setting Page</h1>
       <Table>
         <TableHeader>

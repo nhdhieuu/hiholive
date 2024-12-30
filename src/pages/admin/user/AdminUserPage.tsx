@@ -259,7 +259,7 @@ export function AdminUserPage() {
   };
 
   return (
-    <div className="container mx-auto py-10">
+    <div className=" container px-2 py-2">
       <h1 className="text-2xl font-bold mb-5">Admin User Management</h1>
       <div className="flex justify-between items-center mb-4">
         <Input

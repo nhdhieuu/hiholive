@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
+import { toast } from "react-toastify";
 
 interface StreamInfoModalProps {
   open: boolean;
@@ -25,7 +26,14 @@ export function StreamInfoModal({
 }: StreamInfoModalProps) {
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert("Copied to clipboard!");
+      toast.success("Copy thành công!", {
+        position: "top-right",
+        autoClose: 3000, // Tự động đóng sau 3 giây
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     });
   };
 
@@ -33,7 +41,7 @@ export function StreamInfoModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Stream Information</DialogTitle>
+          <DialogTitle>Thông tin Stream </DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-6 py-4">
