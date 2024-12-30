@@ -1,29 +1,42 @@
 import { useEffect, useRef } from "react";
-import videojs from "video.js";
+import videojs, { VideoJsPlayer, VideoJsPlayerPluginOptions } from "video.js";
 import "video.js/dist/video-js.css";
 
-const StreamVideoJS = ({ sources }) => {
-  const videoRef = useRef(null);
-  const playerRef = useRef(null);
+interface Source {
+  src: string;
+  type: string;
+  label: string;
+}
+
+interface StreamVideoJSProps {
+  sources: Source[];
+}
+
+const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const playerRef = useRef<VideoJsPlayer | null>(null);
 
   useEffect(() => {
-    // Make sure Video.js player is only initialized once
     if (!playerRef.current) {
       const videoElement = videoRef.current;
       if (!videoElement) return;
 
-      // Create Quality Selector Plugin
       const Plugin = videojs.getPlugin("plugin");
-      class QualitySelector extends Plugin {
-        constructor(player, options) {
-          super(player);
 
-          // Make sure to bind player to this context
+      class QualitySelector extends Plugin {
+        player: VideoJsPlayer;
+        sources: Source[];
+        currentQuality: number;
+
+        constructor(
+          player: VideoJsPlayer,
+          options: VideoJsPlayerPluginOptions,
+        ) {
+          super(player, options);
           this.player = player;
           this.sources = options.sources || [];
           this.currentQuality = 0;
 
-          // Wait for the player to be ready before setting up the quality menu
           this.player.ready(() => {
             this.setupQualityMenu();
           });
@@ -33,9 +46,11 @@ const StreamVideoJS = ({ sources }) => {
           const MenuButton = videojs.getComponent("MenuButton");
           const MenuItem = videojs.getComponent("MenuItem");
 
-          // Create custom MenuItem class
           class QualityMenuItem extends MenuItem {
-            constructor(player, options) {
+            resolution: number;
+            sources: Source[];
+
+            constructor(player: VideoJsPlayer, options: any) {
               super(player, {
                 label: options.label,
                 selectable: true,
@@ -46,22 +61,21 @@ const StreamVideoJS = ({ sources }) => {
             }
 
             handleClick() {
-              const items = this.player().controlBar.qualityMenu.items || [];
-              items.forEach((item) => item.selected(false));
+              const items =
+                this.player().controlBar.getChild("qualityMenuButton").items ||
+                [];
+              items.forEach((item: any) => item.selected(false));
               this.selected(true);
 
-              // Save current time and playing state
               const currentTime = this.player().currentTime();
               const wasPlaying = !this.player().paused();
               console.log(`Selected quality: ${this.options_.label}`);
 
-              // Change source
               this.player().src({
                 src: this.sources[this.resolution].src,
                 type: this.sources[this.resolution].type,
               });
 
-              // Restore time and playing state
               this.player().one("loadeddata", () => {
                 this.player().currentTime(currentTime);
                 if (wasPlaying) {
@@ -71,30 +85,29 @@ const StreamVideoJS = ({ sources }) => {
             }
           }
 
-          // Create custom MenuButton class
           class QualityMenuButton extends MenuButton {
-            constructor(player, options) {
+            constructor(player: VideoJsPlayer, options: any) {
               super(player, options);
               videojs.dom.addClass(this.el(), "vjs-quality-selector");
             }
 
             createItems() {
-              return this.options_.sources.map((source, index) => {
-                return new QualityMenuItem(this.player_, {
-                  label: source.label,
-                  resolution: index,
-                  selected: index === 0,
-                  sources: this.options_.sources,
-                });
-              });
+              return this.options_.sources.map(
+                (source: Source, index: number) => {
+                  return new QualityMenuItem(this.player_, {
+                    label: source.label,
+                    resolution: index,
+                    selected: index === 0,
+                    sources: this.options_.sources,
+                  });
+                },
+              );
             }
           }
 
-          // Register components
           videojs.registerComponent("QualityMenuButton", QualityMenuButton);
           videojs.registerComponent("QualityMenuItem", QualityMenuItem);
 
-          // Add quality menu button to control bar
           const controlBar = this.player.getChild("controlBar");
           if (controlBar) {
             controlBar.addChild("QualityMenuButton", {
@@ -104,10 +117,8 @@ const StreamVideoJS = ({ sources }) => {
         }
       }
 
-      // Register plugin
       videojs.registerPlugin("qualitySelector", QualitySelector);
 
-      // Initialize player
       playerRef.current = videojs(videoElement, {
         controls: true,
         fluid: true,
@@ -119,7 +130,6 @@ const StreamVideoJS = ({ sources }) => {
         },
       });
 
-      // Set initial source
       playerRef.current.src({
         src: sources[0].src,
         type: sources[0].type,
@@ -127,7 +137,6 @@ const StreamVideoJS = ({ sources }) => {
     }
   }, [sources]);
 
-  // Cleanup
   useEffect(() => {
     const player = playerRef.current;
     return () => {
