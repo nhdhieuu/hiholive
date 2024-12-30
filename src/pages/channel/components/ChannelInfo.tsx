@@ -2,27 +2,29 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Heart } from "lucide-react";
+import { Channel } from "@/types/channel.ts";
 
-export default function ChannelInfo() {
+interface ChannelInfoProps {
+  channel?: Channel;
+}
+
+export default function ChannelInfo({ channel }: ChannelInfoProps) {
   return (
     <div className="mt-4 pb-4 border-b border-gray-800">
       <div className="flex items-start gap-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage src="/placeholder.svg" />
+          <AvatarImage src={channel?.image || ""} />
           <AvatarFallback>ST</AvatarFallback>
         </Avatar>
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">Streamer</h1>
+            <h1 className="text-2xl font-bold">{channel?.displayName}</h1>
             <Badge variant="secondary">Live</Badge>
           </div>
-          <h2 className="text-xl">League of Legends</h2>
           <p className="text-gray-400 mt-2">548K followers</p>
           <p className="mt-4 text-gray-300">
-            Playing ranked games with viewers! !discord !socials !schedule Lorem
-            ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-            tempor incididunt ut labore.
+            {channel?.description || "This channel has no description yet."}
           </p>
         </div>
 

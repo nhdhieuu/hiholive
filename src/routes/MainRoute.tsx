@@ -22,7 +22,7 @@ export const MainRoute = () => {
           <Route index element={<HomePage />} />
           <Route path="/streaming/:id" element={<StreamingPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/channel/:id" element={<ChannelPage />} />
+          <Route path="/channel/:username" element={<ChannelPage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           {/* This is the root of the admin path */}

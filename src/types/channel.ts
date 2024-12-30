@@ -8,7 +8,6 @@ export interface Channel {
   userName: string;
   displayName: string;
   description: string;
-  url: string;
   contact: string;
   status: number;
 }
