@@ -67,7 +67,7 @@ export const TopBar = () => {
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer">
                     <AvatarImage
-                      src="https://github.com/shadcn.png"
+                      src={userProfile?.avatar?.url || ""}
                       alt="@shadcn"
                     />
                     <AvatarFallback>CN</AvatarFallback>
@@ -77,7 +77,7 @@ export const TopBar = () => {
                   <div className="flex items-center gap-2 p-2">
                     <Avatar>
                       <AvatarImage
-                        src="https://github.com/shadcn.png"
+                        src={userProfile?.avatar?.url || ""}
                         alt="@shadcn"
                       />
                       <AvatarFallback>CN</AvatarFallback>
