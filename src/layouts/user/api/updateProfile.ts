@@ -10,8 +10,8 @@ export async function updateProfile(
   userUpdate: UserUpdate,
 ): Promise<UpdateProfileResponse> {
   try {
-    const response = await axiosInstance.put<UpdateProfileResponse>(
-      `/v1/user/${id}/`,
+    const response = await axiosInstance.patch<UpdateProfileResponse>(
+      `/v1/user/${id}`,
       userUpdate,
     );
     return response.data;

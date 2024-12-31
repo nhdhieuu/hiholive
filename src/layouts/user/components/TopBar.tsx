@@ -98,14 +98,17 @@ export const TopBar = () => {
                       <span>Tạo kênh</span>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem
-                    onSelect={() => {
-                      setShowStreamDialog(true);
-                    }}
-                  >
-                    <Video className="mr-2 h-4 w-4" />
-                    <span>Trình tạo Stream</span>
-                  </DropdownMenuItem>
+                  {userProfile?.SystemRole === "streamer" && (
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        setShowStreamDialog(true);
+                      }}
+                    >
+                      <Video className="mr-2 h-4 w-4" />
+                      <span>Trình tạo Stream</span>
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuItem
                     onSelect={() => {
                       setShowSettingDialog(true);

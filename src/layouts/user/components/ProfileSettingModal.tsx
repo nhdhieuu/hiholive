@@ -35,7 +35,7 @@ export function ProfileSettingModal({
   onOpenChange,
 }: ProfileSettingModalProps) {
   const [avatar, setAvatar] = useState<string>("/placeholder.svg");
-  const { userProfile } = useUserProfile();
+  const { userProfile, setUserProfile } = useUserProfile();
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [isDisplayNameEditable, setIsDisplayNameEditable] = useState(false);
   const [userUpdate, setUserUpdate] = useState<UserUpdate>();
@@ -51,7 +51,7 @@ export function ProfileSettingModal({
           setUserUpdate({ ...userUpdate, avatar: response.data });
           toast.success("Cập nhật ảnh đại diện thành công!", {
             position: "top-right",
-            autoClose: 3000, // Tự động đóng sau 3 giây
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -62,7 +62,7 @@ export function ProfileSettingModal({
         console.error("Image upload failed:", error);
         toast.error("Cập nhật ảnh đại diện thất bại!", {
           position: "top-right",
-          autoClose: 3000, // Tự động đóng sau 3 giây
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -78,9 +78,12 @@ export function ProfileSettingModal({
         userUpdate || {},
       );
       if (response) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        setUserProfile({ ...userProfile, ...userUpdate });
         toast.success("Cập nhật thông tin thành công!", {
           position: "top-right",
-          autoClose: 3000, // Tự động đóng sau 3 giây
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -91,7 +94,7 @@ export function ProfileSettingModal({
       console.error("Update profile failed:", error);
       toast.error("Cập nhật thông tin thất bại!", {
         position: "top-right",
-        autoClose: 3000, // Tự động đóng sau 3 giây
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -221,7 +224,13 @@ export function ProfileSettingModal({
             </div>
             <div className="grid gap-2">
               <Label htmlFor="address">Địa chỉ</Label>
-              <Input id="address" defaultValue={userProfile?.address} />
+              <Input
+                id="address"
+                defaultValue={userProfile?.address}
+                onChange={(e) =>
+                  setUserUpdate({ ...userUpdate, address: e.target.value })
+                }
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="dateOfBirth">Ngày sinh</Label>
