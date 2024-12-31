@@ -5,8 +5,8 @@ export interface Channel {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  panel: string | null;
-  image: string | null;
+  panel: Image | null;
+  image: Image | null;
   userName: string;
   displayName: string;
   description: string;

@@ -13,7 +13,7 @@ export default function ChannelInfo({ channel }: ChannelInfoProps) {
     <div className="mt-4 pb-4 border-b border-gray-800">
       <div className="flex items-start gap-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={channel?.image || ""} />
+          <AvatarImage src={channel?.image?.url || ""} />
           <AvatarFallback>ST</AvatarFallback>
         </Avatar>
 

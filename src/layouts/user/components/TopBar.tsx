@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button.tsx";
-import { Globe, LogOut, Mail, Settings, User, Video } from "lucide-react";
+import { Globe, LogOut, Mail, Settings, Tv, User, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -74,7 +74,12 @@ export const TopBar = () => {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end">
-                  <div className="flex items-center gap-2 p-2">
+                  <div
+                    className="flex items-center gap-2 p-2 hover:bg-gray-50"
+                    onClick={() => {
+                      navigate(`/channel/${userProfile?.user_name}`);
+                    }}
+                  >
                     <Avatar>
                       <AvatarImage
                         src={userProfile?.avatar?.url || ""}
@@ -84,7 +89,7 @@ export const TopBar = () => {
                     </Avatar>
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium">
-                        {userProfile?.first_name} {userProfile?.last_name}
+                        {userProfile?.display_name}
                       </p>
                     </div>
                   </div>
@@ -96,6 +101,16 @@ export const TopBar = () => {
                     >
                       <User className="mr-2 h-4 w-4" />
                       <span>Tạo kênh</span>
+                    </DropdownMenuItem>
+                  )}
+                  {userProfile?.SystemRole === "streamer" && (
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        setShowStreamDialog(true);
+                      }}
+                    >
+                      <Tv className="mr-2 h-4 w-4" />
+                      <span>Thông tin kênh</span>
                     </DropdownMenuItem>
                   )}
                   {userProfile?.SystemRole === "streamer" && (
