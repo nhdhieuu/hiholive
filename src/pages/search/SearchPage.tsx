@@ -4,14 +4,19 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import SearchStreamCard from "@/pages/search/components/SearchStreamCard.tsx";
 import SearchChannel from "@/pages/search/components/SearchChannel.tsx";
 import SearchPreviousVideo from "@/pages/search/components/SearchPreviousVideo.tsx";
-import { getListStreamSearch } from "@/pages/search/api/searchApi.ts";
+import {
+  getListChannelSearch,
+  getListStreamSearch,
+} from "@/pages/search/api/searchApi.ts";
 import { Stream } from "@/types/stream.ts";
 import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
+import { Channel } from "@/types/channel.ts";
 
 export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [searchResults, setSearchResults] = useState<Stream[]>([]);
+  const [channelResults, setChannelResults] = useState<Channel[]>([]);
   const query = new URLSearchParams(location.search);
   const search = query.get("q") || "";
 
@@ -23,10 +28,20 @@ export default function SearchPage() {
       setLoading(false);
     }
   };
-
+  const fetchChannelResults = async () => {
+    const channelResponse = await getListChannelSearch({
+      userName: search.toLowerCase(),
+    });
+    if (channelResponse) {
+      console.log("Channel Response:", channelResponse);
+      setChannelResults(channelResponse.data);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     fetchSearchResults();
-  }, []);
+    fetchChannelResults();
+  }, [search]);
 
   if (loading) {
     return <LoadingAnimation />;
@@ -53,8 +68,9 @@ export default function SearchPage() {
           {/* Featured Channel */}
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Kênh</h2>
-            <SearchChannel />
-            <SearchChannel />
+            {channelResults.map((channel) => (
+              <SearchChannel key={channel.id} channel={channel} />
+            ))}
           </section>
 
           {/* Categories Section */}
