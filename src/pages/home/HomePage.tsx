@@ -21,7 +21,7 @@ export default function HomePage() {
   };
   const fetchStreams = async () => {
     try {
-      const data = await getListStream({ state: "ended", limit: 10 });
+      const data = await getListStream({ state: "running", limit: 10 });
       console.log("Data:", data);
       setStreams(data.data);
       setLoading(false);

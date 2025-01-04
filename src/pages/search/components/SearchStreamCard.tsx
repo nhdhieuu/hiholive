@@ -45,7 +45,9 @@ export default function SearchStreamCard({ data }: SearchStreamCardProps) {
         </div>
 
         <div className="mt-1">
-          <p className="text-sm text-muted-foreground mb-2">7 người xem</p>
+          <p className="text-sm text-muted-foreground mb-2">
+            {data.currentView} người xem
+          </p>
           <p className="text-sm text-muted-foreground mb-2">{data.title}</p>
         </div>
       </div>

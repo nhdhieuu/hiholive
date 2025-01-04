@@ -18,16 +18,31 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [searchResults, setSearchResults] = useState<Stream[]>([]);
+  const [videoResults, setVideoResults] = useState<Stream[]>([]);
   const [channelResults, setChannelResults] = useState<Channel[]>([]);
   const [categoryResults, setCategoryResults] = useState<Category[]>([]);
   const query = new URLSearchParams(location.search);
   const search = query.get("q") || "";
 
   const fetchSearchResults = async () => {
-    const searchRepsonse = await getListStreamSearch({ title: search });
+    const searchRepsonse = await getListStreamSearch({
+      state: "running",
+      title: search,
+    });
     if (searchRepsonse) {
       console.log("Search Response:", searchRepsonse);
       setSearchResults(searchRepsonse.data);
+      setLoading(false);
+    }
+  };
+  const fetchVideoResults = async () => {
+    const searchRepsonse = await getListStreamSearch({
+      state: "ended",
+      title: search,
+    });
+    if (searchRepsonse) {
+      console.log("Video Response:", searchRepsonse);
+      setVideoResults(searchRepsonse.data);
       setLoading(false);
     }
   };
@@ -57,6 +72,7 @@ export default function SearchPage() {
     fetchSearchResults();
     fetchChannelResults();
     fetchCategoryResults();
+    fetchVideoResults();
   }, [search]);
 
   if (loading) {
@@ -80,7 +96,7 @@ export default function SearchPage() {
               <h2 className="text-lg font-semibold">
                 Các kênh trực tiếp được gắn thẻ {search}
               </h2>
-              {searchResults.map((stream) => (
+              {searchResults.slice(0, 5).map((stream) => (
                 <SearchStreamCard key={stream.id} data={stream} />
               ))}
             </section>
@@ -107,12 +123,14 @@ export default function SearchPage() {
           )}
 
           {/* Recent Videos */}
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Video trước đây</h2>
-            <SearchPreviousVideo />
-            <SearchPreviousVideo />
-            <SearchPreviousVideo />
-          </section>
+          {videoResults.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">Video trước đây</h2>
+              {videoResults.slice(0, 5).map((stream) => (
+                <SearchPreviousVideo key={stream.id} data={stream} />
+              ))}
+            </section>
+          )}
         </>
       )}
     </div>
