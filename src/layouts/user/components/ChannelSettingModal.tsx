@@ -50,7 +50,7 @@ export function ChannelSettingModal({
         if (response) {
           setAvatar(response.data.url);
           setCreateChannel({ ...createChannel, panel: response.data });
-          toast.success("Cập nhật ảnh đại diện thành công!", {
+          toast.success("Cập nhật ảnh bìa thành công!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -58,10 +58,11 @@ export function ChannelSettingModal({
             pauseOnHover: true,
             draggable: true,
           });
+          onOpenChange(false);
         }
       } catch (error) {
         console.error("Image upload failed:", error);
-        toast.error("Cập nhật ảnh đại diện thất bại!", {
+        toast.error("Cập nhật ảnh bìa thất bại!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,

@@ -34,8 +34,10 @@ export function ProfileSettingModal({
   isOpen,
   onOpenChange,
 }: ProfileSettingModalProps) {
-  const [avatar, setAvatar] = useState<string>("/placeholder.svg");
   const { userProfile, setUserProfile } = useUserProfile();
+  const [avatar, setAvatar] = useState<string>(
+    userProfile?.avatar?.url || "/placeholder.svg",
+  );
   const [isUsernameEditable, setIsUsernameEditable] = useState(false);
   const [isDisplayNameEditable, setIsDisplayNameEditable] = useState(false);
   const [userUpdate, setUserUpdate] = useState<UserUpdate>();
@@ -89,6 +91,7 @@ export function ProfileSettingModal({
           pauseOnHover: true,
           draggable: true,
         });
+        onOpenChange(false);
       }
     } catch (error) {
       console.error("Update profile failed:", error);
@@ -106,7 +109,6 @@ export function ProfileSettingModal({
     if (!isOpen) {
       // Reset userUpdate khi modal đóng
       setUserUpdate(undefined);
-      setAvatar("/placeholder.svg");
       setIsUsernameEditable(false);
       setIsDisplayNameEditable(false);
     }
