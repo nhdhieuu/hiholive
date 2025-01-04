@@ -1,12 +1,20 @@
 import { Category } from "@/types/category.ts";
+import { useNavigate } from "react-router-dom";
 
 interface SearchCategoryCardProps {
   data: Category;
 }
 
 export function SearchCategoryCard({ data }: SearchCategoryCardProps) {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex items-start gap-4 p-4 bg-background rounded-lg hover:bg-accent/50 transition-colors cursor-pointer max-w-2xl">
+    <div
+      className="flex items-start gap-4 p-4 bg-background rounded-lg hover:bg-accent/50 transition-colors cursor-pointer max-w-2xl"
+      onClick={() => {
+        navigate(`/category/${data.id}`);
+      }}
+    >
       {/* Thumbnail Section */}
       <div className="relative flex-shrink-0">
         <img
