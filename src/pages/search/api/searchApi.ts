@@ -1,6 +1,7 @@
 import axiosInstance from "@/axiosSetup.ts";
 import { Stream } from "@/types/stream.ts";
 import { Channel } from "@/types/channel.ts";
+import { Category } from "@/types/category.ts";
 
 interface ListStreamRespone {
   data: Stream[];
@@ -8,7 +9,9 @@ interface ListStreamRespone {
 interface ListChannelResponse {
   data: Channel[];
 }
-
+interface ListCategoryResponse {
+  data: Category[];
+}
 interface StreamSearchParams {
   [key: string]: unknown;
 }
@@ -37,6 +40,21 @@ export const getListChannelSearch = async (
     return response.data;
   } catch (error) {
     console.error("Error fetching channel list:", error);
+    throw error;
+  }
+};
+
+export const getListCategorySearch = async (
+  params: StreamSearchParams,
+): Promise<ListCategoryResponse> => {
+  try {
+    const response = await axiosInstance.get<ListCategoryResponse>(
+      "/v1/category/",
+      { params },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching category list:", error);
     throw error;
   }
 };

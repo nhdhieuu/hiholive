@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import SearchStreamCard from "@/pages/search/components/SearchStreamCard.tsx";
 import SearchChannel from "@/pages/search/components/SearchChannel.tsx";
 import SearchPreviousVideo from "@/pages/search/components/SearchPreviousVideo.tsx";
 import {
+  getListCategorySearch,
   getListChannelSearch,
   getListStreamSearch,
 } from "@/pages/search/api/searchApi.ts";
 import { Stream } from "@/types/stream.ts";
 import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
 import { Channel } from "@/types/channel.ts";
+import { Category } from "@/types/category.ts";
+import { SearchCategoryCard } from "@/pages/search/components/SearchCategoryCard.tsx";
 
 export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [searchResults, setSearchResults] = useState<Stream[]>([]);
   const [channelResults, setChannelResults] = useState<Channel[]>([]);
+  const [categoryResults, setCategoryResults] = useState<Category[]>([]);
   const query = new URLSearchParams(location.search);
   const search = query.get("q") || "";
 
@@ -38,9 +41,20 @@ export default function SearchPage() {
       setLoading(false);
     }
   };
+  const fetchCategoryResults = async () => {
+    const categoryResponse = await getListCategorySearch({
+      name: search,
+    });
+    if (categoryResponse) {
+      console.log("category Response:", categoryResponse);
+      setCategoryResults(categoryResponse.data);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     fetchSearchResults();
     fetchChannelResults();
+    fetchCategoryResults();
   }, [search]);
 
   if (loading) {
@@ -48,7 +62,9 @@ export default function SearchPage() {
   }
   return (
     <div className="min-h-screen bg-background text-foreground p-4 space-y-6">
-      {searchResults.length === 0 ? (
+      {searchResults.length === 0 &&
+      channelResults.length === 0 &&
+      categoryResults.length === 0 ? (
         <div>
           Không tìm thấy kết quả nào cho {search}. Đảm bảo rằng bạn không viết
           sai chính tả từ nào hoặc bạn hãy thử từ khóa khác.
@@ -76,10 +92,9 @@ export default function SearchPage() {
           {/* Categories Section */}
           <section className="space-y-4">
             <h2 className="text-lg font-semibold">Danh mục</h2>
-            <ScrollArea className="w-full whitespace-nowrap">
-              <div className="flex space-x-4"></div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            {categoryResults.map((category) => (
+              <SearchCategoryCard data={category} />
+            ))}
           </section>
 
           {/* Recent Videos */}
