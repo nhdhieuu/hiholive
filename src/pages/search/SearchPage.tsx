@@ -51,7 +51,9 @@ export default function SearchPage() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
+    setLoading(true);
     fetchSearchResults();
     fetchChannelResults();
     fetchCategoryResults();
@@ -60,6 +62,7 @@ export default function SearchPage() {
   if (loading) {
     return <LoadingAnimation />;
   }
+
   return (
     <div className="min-h-screen bg-background text-foreground p-4 space-y-6">
       {searchResults.length === 0 &&
@@ -72,30 +75,36 @@ export default function SearchPage() {
       ) : (
         <>
           {/* Live Channels Section */}
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold">
-              Các kênh trực tiếp được gắn thẻ {search}
-            </h2>
-            {searchResults.map((stream) => (
-              <SearchStreamCard key={stream.id} data={stream} />
-            ))}
-          </section>
+          {searchResults.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">
+                Các kênh trực tiếp được gắn thẻ {search}
+              </h2>
+              {searchResults.map((stream) => (
+                <SearchStreamCard key={stream.id} data={stream} />
+              ))}
+            </section>
+          )}
 
           {/* Featured Channel */}
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Kênh</h2>
-            {channelResults.map((channel) => (
-              <SearchChannel key={channel.id} channel={channel} />
-            ))}
-          </section>
+          {channelResults.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">Kênh</h2>
+              {channelResults.map((channel) => (
+                <SearchChannel key={channel.id} channel={channel} />
+              ))}
+            </section>
+          )}
 
           {/* Categories Section */}
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold">Danh mục</h2>
-            {categoryResults.map((category) => (
-              <SearchCategoryCard data={category} />
-            ))}
-          </section>
+          {categoryResults.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">Danh mục</h2>
+              {categoryResults.map((category) => (
+                <SearchCategoryCard key={category.id} data={category} />
+              ))}
+            </section>
+          )}
 
           {/* Recent Videos */}
           <section className="space-y-4">
