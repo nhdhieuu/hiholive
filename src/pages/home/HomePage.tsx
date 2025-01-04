@@ -2,14 +2,16 @@ import HomeStreamCard from "@/pages/home/components/HomeStreamCard.tsx";
 import ShowMoreDivider from "@/pages/home/components/ShowMoreDivider.tsx";
 import { useEffect, useState } from "react";
 import CategoryCard from "@/pages/home/components/CategoryCard.tsx";
-import { getListStream } from "./api/homeApi";
+import { getCategory, getListStream } from "./api/homeApi";
 import { Stream } from "@/types/stream.ts";
 import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
+import { Category } from "@/types/category.ts";
 
 export default function HomePage() {
   const [isShowMore, setIsShowMore] = useState(false);
   const [isShowMoreSection2, setIsShowMoreSection2] = useState(false);
   const [streams, setStreams] = useState<Stream[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const handleShowMore = () => {
     setIsShowMore(!isShowMore);
@@ -27,62 +29,20 @@ export default function HomePage() {
       console.error("Error fetching streams:", error);
     }
   };
+  const fetchCategories = async () => {
+    try {
+      const data = await getCategory();
+      console.log("Data:", data.data);
+      setCategories(data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
   useEffect(() => {
     fetchStreams();
+    fetchCategories();
   }, []);
-  const categoryMockData = [
-    {
-      title: "League of Legends",
-      viewers: 102000,
-      tags: ["RPG", "Strategy"],
-      imageUrl: "https://static-cdn.jtvnw.net/ttv-boxart/21779-144x192.jpg",
-    },
-    {
-      title: "Just Chatting",
-      viewers: 102000,
-      tags: ["RPG", "Strategy"],
-      imageUrl: "https://static-cdn.jtvnw.net/ttv-boxart/509658-188x250.jpg",
-    },
 
-    {
-      title: "Valorant",
-      viewers: 102000,
-      tags: ["Shooting", "Fps"],
-      imageUrl: "https://static-cdn.jtvnw.net/ttv-boxart/516575-188x250.jpg",
-    },
-    {
-      title: "NARAKA: BLADEPOINT",
-      viewers: 102000,
-      tags: ["Shooting", "Fps"],
-      imageUrl:
-        "https://static-cdn.jtvnw.net/ttv-boxart/515474_IGDB-188x250.jpg",
-    },
-    {
-      title: "Counter-Strike",
-      viewers: 102000,
-      tags: ["Shooting", "Fps"],
-      imageUrl: "https://static-cdn.jtvnw.net/ttv-boxart/32399-188x250.jpg",
-    },
-    {
-      title: "Dota 2",
-      viewers: 102000,
-      tags: ["Shooting", "Fps"],
-      imageUrl: "https://static-cdn.jtvnw.net/ttv-boxart/29595-188x250.jpg",
-    },
-    {
-      title: "Teamfight Tactics",
-      viewers: 102000,
-      tags: ["Shooting", "Fps"],
-      imageUrl: "https://static-cdn.jtvnw.net/ttv-boxart/513143-188x250.jpg",
-    },
-    {
-      title: "EA Sports FC 25",
-      viewers: 102000,
-      tags: ["Shooting", "Fps"],
-      imageUrl:
-        "https://static-cdn.jtvnw.net/ttv-boxart/2011938005_IGDB-188x250.jpg",
-    },
-  ];
   if (loading) {
     return <LoadingAnimation />;
   }
@@ -140,14 +100,8 @@ export default function HomePage() {
           Các danh mục chúng tôi nghĩ bạn sẽ thích
         </h1>
         <div className="flex gap-4">
-          {categoryMockData.map((data, index) => (
-            <CategoryCard
-              key={data.title || index} // Sử dụng `data.id` nếu có, nếu không dùng `index` như giải pháp dự phòng
-              title={data.title}
-              viewers={data.viewers}
-              tags={data.tags}
-              imageUrl={data.imageUrl}
-            />
+          {categories.map((data, index) => (
+            <CategoryCard key={index} category={data} />
           ))}
         </div>
       </div>
