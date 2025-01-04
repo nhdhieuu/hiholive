@@ -31,7 +31,10 @@ export default function ChannelPage() {
         <div className="relative">
           <div className="h-[500px] relative aspect-video w-full overflow-hidden rounded-lg">
             <img
-              src="https://placehold.co/600x400?text=Hiholive"
+              src={
+                channel?.image?.url ||
+                "https://placehold.co/600x400?text=Hiholive"
+              }
               alt="Stream Thumbnail"
               className="w-full h-full object-cover"
             />

@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,15 +17,15 @@ import { useUserProfile } from "@/stores/useUserProfile.ts";
 import { createChannelApi } from "@/layouts/user/api/createChannelApi.ts";
 import { CreateChannel } from "@/types/channel.ts";
 
-interface ChannelSettingModalProps {
+interface ChannelUpdateModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function ChannelSettingModal({
+export function ChannelUpdateModal({
   open,
   onOpenChange,
-}: ChannelSettingModalProps) {
+}: ChannelUpdateModalProps) {
   const [avatar, setAvatar] = useState<string>("/placeholder.svg");
   const { userProfile, setUserProfile } = useUserProfile();
 
@@ -122,7 +120,7 @@ export function ChannelSettingModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Tạo kênh</DialogTitle>
+          <DialogTitle>Thông tin kênh</DialogTitle>
         </DialogHeader>
         <div className="grid gap-6 py-4">
           <div className="flex flex-col items-center gap-4">
@@ -181,21 +179,6 @@ export function ChannelSettingModal({
                 setCreateChannel({
                   ...createChannel,
                   contact: e.target.value,
-                })
-              }
-            />
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="url">URL</Label>
-            <Input
-              id="url"
-              type="url"
-              placeholder="https://example.com"
-              onChange={(e) =>
-                setCreateChannel({
-                  ...createChannel,
-                  url: e.target.value,
                 })
               }
             />

@@ -19,6 +19,7 @@ import { StreamDialog } from "./StreamDialog.tsx";
 import { SearchBar } from "@/layouts/user/components/SearchBar.tsx";
 import { useUserProfile } from "@/stores/useUserProfile.ts";
 import { ProfileSettingModal } from "@/layouts/user/components/ProfileSettingModal.tsx";
+import { ChannelUpdateModal } from "@/layouts/user/components/ChannelUpdateModal.tsx";
 
 export const TopBar = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ export const TopBar = () => {
   const [showChannelDialog, setShowChannelDialog] = useState<boolean>(false);
   const [showStreamDialog, setShowStreamDialog] = useState<boolean>(false);
   const [showSettingDialog, setShowSettingDialog] = useState<boolean>(false);
+  const [showChannelUpdateDialog, setShowChannelUpdateDialog] =
+    useState<boolean>(false);
   const { userProfile, clearUserProfile } = useUserProfile();
   useEffect(() => {
     console.log("Userprofile: ", userProfile);
@@ -106,7 +109,7 @@ export const TopBar = () => {
                   {userProfile?.SystemRole === "streamer" && (
                     <DropdownMenuItem
                       onSelect={() => {
-                        setShowStreamDialog(true);
+                        setShowChannelUpdateDialog(true);
                       }}
                     >
                       <Tv className="mr-2 h-4 w-4" />
@@ -157,6 +160,10 @@ export const TopBar = () => {
               <ProfileSettingModal
                 isOpen={showSettingDialog}
                 onOpenChange={setShowSettingDialog}
+              />
+              <ChannelUpdateModal
+                open={showChannelUpdateDialog}
+                onOpenChange={setShowChannelUpdateDialog}
               />
             </div>
           ) : (

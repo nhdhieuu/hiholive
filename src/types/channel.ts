@@ -16,8 +16,13 @@ export interface Channel {
 export interface CreateChannel {
   userName: string;
   displayName: string;
-  pannel?: Image | null;
+  panel?: Image | null;
   description?: string;
   contact?: string;
   url?: string; // check url if exist return error
+}
+export interface UpdateChannel {
+  panel?: Image | null;
+  description?: string;
+  contact?: string;
 }
