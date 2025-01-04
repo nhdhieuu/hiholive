@@ -28,6 +28,7 @@ export default function SearchPreviousVideo({
           <p className="text-sm text-muted-foreground">
             {data.category?.name || "Unknown Category"}
           </p>
+          <p className="text-sm text-muted-foreground">{data.description}</p>
         </div>
       </div>
     </div>

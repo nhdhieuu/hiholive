@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
@@ -152,9 +151,6 @@ export default function StreamingPage() {
                 <div className="flex items-center gap-1 text-sm">
                   <ViewCount streamId={streamDetail?.id || ""} />
                 </div>
-                <Button className="bg-purple-600 hover:bg-purple-700">
-                  Follow
-                </Button>
               </div>
             </div>
 

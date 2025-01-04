@@ -29,7 +29,7 @@ export function ViewCount({ streamId }: ViewCountProps) {
   return (
     <div className="flex items-center gap-1 text-sm">
       <Users className="w-4 h-4" />
-      <span>{view}</span>
+      <span>{view} người đang xem</span>
     </div>
   );
 }

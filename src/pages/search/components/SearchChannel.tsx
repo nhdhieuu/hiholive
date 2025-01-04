@@ -1,12 +1,19 @@
 import { Channel } from "@/types/channel.ts";
+import { useNavigate } from "react-router-dom";
 
 interface SearchChannelProps {
   channel: Channel;
 }
 
 export default function SearchChannel({ channel }: SearchChannelProps) {
+  const navigate = useNavigate();
   return (
-    <div className="flex items-center gap-4 p-4 max-w-xl">
+    <div
+      className="flex items-center gap-4 p-4 max-w-xl hover:bg-accent/50 transition-colors cursor-pointer"
+      onClick={() => {
+        navigate(`/channel/${channel.userName}`);
+      }}
+    >
       <img
         src={channel?.image?.url || "https://placehold.co/600x400"}
         alt="Channel avatar"

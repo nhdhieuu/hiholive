@@ -4,14 +4,21 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar.tsx";
 import { Stream } from "@/types/stream.ts";
+import { useNavigate } from "react-router-dom";
 
 interface SearchStreamCardProps {
   data: Stream;
 }
 
 export default function SearchStreamCard({ data }: SearchStreamCardProps) {
+  const navigate = useNavigate();
   return (
-    <div className="flex items-start gap-4 p-4 bg-background rounded-lg hover:bg-accent/50 transition-colors cursor-pointer max-w-2xl">
+    <div
+      className="flex items-start gap-4 p-4 bg-background rounded-lg hover:bg-accent/50 transition-colors cursor-pointer max-w-2xl"
+      onClick={() => {
+        navigate(`/streaming/${data.id}`);
+      }}
+    >
       {/* Thumbnail Section */}
       <div className="relative flex-shrink-0">
         <img
