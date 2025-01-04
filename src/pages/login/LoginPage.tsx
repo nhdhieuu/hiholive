@@ -134,7 +134,9 @@ export default function LoginPage() {
                 </FormItem>
               )}
             />
-
+            <Link className={"text-sm underline"} to={"/forgot-password"}>
+              Quên mật khẩu?
+            </Link>
             {/* Submit Button */}
             <Button className={"w-full"} type="submit">
               Submit

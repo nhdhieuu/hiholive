@@ -11,6 +11,7 @@ import { AdminSettingPage } from "@/pages/admin/setting/AdminSettingPage.tsx";
 import { AdminUserPage } from "@/pages/admin/user/AdminUserPage.tsx";
 import AdminCategoryPage from "@/pages/admin/category/AdminCategoryPage.tsx";
 import AdminStreamPage from "@/pages/admin/stream/AdminStreamPage.tsx";
+import { ForgotPassword } from "@/pages/forgot-password/ForgotPassword.tsx";
 
 export const MainRoute = () => {
   return (
@@ -18,6 +19,7 @@ export const MainRoute = () => {
       <Routes>
         <Route path="login" element={<LoginPage />} />
         <Route path="signup" element={<SignUpPage />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/streaming/:id" element={<StreamingPage />} />
