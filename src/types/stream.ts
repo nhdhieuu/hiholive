@@ -1,3 +1,5 @@
+import { Image } from "@/types/image.ts";
+
 export interface Stream {
   id: string;
   createdAt: Date;
@@ -24,7 +26,7 @@ export interface Channel {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  image?: string | null;
+  image?: Image | null;
   userName: string;
   displayName: string;
 }

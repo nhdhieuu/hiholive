@@ -1,3 +1,5 @@
+import { Image } from "@/types/image.ts";
+
 export interface StreamDetailResponse {
   data: StreamDetailResponseData;
 }
@@ -35,7 +37,7 @@ export interface Channel {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  image: null;
+  image: Image;
   userName: string;
   displayName: string;
 }

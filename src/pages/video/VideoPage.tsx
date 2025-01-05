@@ -1,75 +1,55 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useState } from "react";
-import { ChatSidebar } from "@/pages/streaming/components/ChatSidebar.tsx";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSocketStore } from "@/stores/useSocket";
+import { useEffect, useRef, useState } from "react";
 import { StreamDetailResponseData } from "@/types/streamDetail.ts";
-import { getStreamDetail } from "./api/streamApi";
-import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
-import { ViewCount } from "./components/ViewCount";
-import StreamVideoJS from "@/components/StreamVideoJS.tsx";
+import VideoJS from "@/components/VideoPlayer.tsx";
+import { getStreamDetail } from "../streaming/api/streamApi";
 
-export default function StreamingPage() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  /*const playerRef = useRef<Player | null>(null);*/
-  const { socket } = useSocketStore();
-  const { id } = useParams<{ id: string }>();
+export function VideoPage() {
   const [streamDetail, setStreamDetail] =
     useState<StreamDetailResponseData | null>(null);
-
+  const playerRef = useRef(null);
+  const { id } = useParams<{ id: string }>();
   const fetchStreamDetail = async (id: string) => {
     try {
       const data = await getStreamDetail(id);
       console.log("Data:", data);
       setStreamDetail(data.data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching streams:", error);
     }
   };
-
-  /*fetch(`https://content.hiholive.fun/${id}/master.m3u8`).then(async (r) => {
-    const data = await r.text();
-    data.split("\n").forEach((r) => {
-      if (r.startsWith("index-")) {
-        console.log(r);
-      }
-    });
-  });*/
-  const videoSources = [
-    {
-      src: `https://content.hiholive.fun/${id}/master.m3u8`,
-      type: "application/x-mpegURL",
-      label: "auto",
-    },
-    {
-      src: `https://content.hiholive.fun/${id}/index-1080p60.m3u8`,
-      type: "application/x-mpegURL",
-      label: "1080",
-    },
-    {
-      src: `https://content.hiholive.fun/${id}/index-720p60.m3u8`,
-      type: "application/x-mpegURL",
-      label: "720",
-    },
-  ];
   useEffect(() => {
     if (id) {
       fetchStreamDetail(id);
     }
   }, []);
-  useEffect(() => {
-    if (socket) {
-      socket.emit("stream:view", id, (data: unknown) => {
-        console.log("Join Streamchat successfully", data);
-      });
-    }
-  }, [socket, id]);
+  const videoJsOptions = {
+    autoplay: true,
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [
+      {
+        src: "https://content.hiholive.fun/ECVJ2XGmF3DHF6Y/master.m3u8",
+        type: "application/x-mpegURL",
+      },
+    ],
+  };
 
-  if (loading) {
-    return <LoadingAnimation />;
-  }
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // You can handle player events here, for example:
+    player.on("waiting", () => {
+      videojs.log("player is waiting");
+    });
+
+    player.on("dispose", () => {
+      videojs.log("player will dispose");
+    });
+  };
+  const navigate = useNavigate();
   return (
     <div className="max-h-screen">
       {/* Main content area */}
@@ -78,11 +58,7 @@ export default function StreamingPage() {
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
           <div className="w-full">
-            {/*<VideoJSPlayer
-              options={videoJsOptions}
-              onReady={handlePlayerReady}
-            />*/}
-            <StreamVideoJS sources={videoSources} />
+            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
           </div>
 
           {/* Channel info section */}
@@ -92,17 +68,14 @@ export default function StreamingPage() {
                 {/* Avatar and live indicator */}
                 <div className="relative">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage
+                    {/*<AvatarImage
                       src={
-                        streamDetail?.channel?.image?.url ||
-                        "https://placehold.co/600x400?text=hiholive"
+                        streamDetail?.channel.image.url ||
+                        "https://placehold.co/600x400?text=Eduhub"
                       }
-                    />
+                    />*/}
                     <AvatarFallback>CH</AvatarFallback>
                   </Avatar>
-                  <span className="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs font-semibold bg-red-500 text-white rounded">
-                    LIVE
-                  </span>
                 </div>
 
                 {/* Stream info */}
@@ -124,13 +97,6 @@ export default function StreamingPage() {
                   </p>
                 </div>
               </div>
-
-              {/* Action buttons */}
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 text-sm">
-                  <ViewCount streamId={streamDetail?.id || ""} />
-                </div>
-              </div>
             </div>
 
             {/* About section */}
@@ -148,9 +114,6 @@ export default function StreamingPage() {
             </div>
           </div>
         </div>
-
-        {/* Chat sidebar */}
-        <ChatSidebar streamId={streamDetail?.id || ""}></ChatSidebar>
       </div>
     </div>
   );

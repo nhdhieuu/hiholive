@@ -142,6 +142,8 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
         controls: true,
         fluid: true,
         responsive: true,
+        liveui: true,
+        liveTracker: true,
         autoplay: true, // Added autoplay option
         plugins: {
           qualitySelector: {
@@ -168,7 +170,7 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
   }, []);
 
   return (
-    <div data-vjs-player>
+    <div className="stream-video-player" data-vjs-player>
       <video ref={videoRef} className="video-js vjs-big-play-centered" />
     </div>
   );

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -7,15 +7,15 @@ import "video.js/dist/video-js.css";
 import { Stream } from "@/types/stream.ts";
 import VideoJSPlayer from "@/components/VideoJSPlayer.tsx";
 
-interface HomeStreamCardProps {
+interface HomeVideoCardProps {
   streamData: Stream;
 }
 
-export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
+export default function HomeVideoCard({ streamData }: HomeVideoCardProps) {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   /*const videoRef = useRef<HTMLVideoElement>(null);
-  const playerRef = useRef<Player | null>(null);*/
+    const playerRef = useRef<Player | null>(null);*/
 
   const videoJsOptions = {
     autoplay: true,
@@ -44,17 +44,13 @@ export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
     <Card
       className="w-full overflow-hidden bg-background hover:bg-gray-50"
       onClick={() => {
-        navigate(`/streaming/${streamData.id}`);
+        navigate(`/video/${streamData.id}`);
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Stream Preview Section */}
       <div className="relative aspect-video overflow-hidden bg-muted">
-        <div className="absolute left-4 top-4 flex items-center gap-2 rounded-md bg-red-600 px-2 py-1 text-white">
-          <div className="h-2 w-2 rounded-full bg-white" />
-          LIVE
-        </div>
         <div className="absolute bottom-4 left-4 flex items-center gap-2 text-white">
           <Eye className="h-4 w-4" />
           <span>{streamData.currentView} viewers</span>
@@ -80,20 +76,22 @@ export default function HomeStreamCard({ streamData }: HomeStreamCardProps) {
       <CardContent className="p-4">
         <div className="flex gap-3">
           <Avatar className="h-10 w-10">
-            <AvatarImage src="/placeholder.svg?height=40&width=40" />
-            <AvatarFallback>TW</AvatarFallback>
+            <AvatarImage
+              src={
+                streamData?.channel?.image?.url ||
+                "https://placehold.co/600x400?text=Hiholive"
+              }
+            />
           </Avatar>
           <div className="flex-1">
             <h3 className="line-clamp-1 font-semibold">{streamData.title}</h3>
             <p className="text-sm text-muted-foreground">
               {streamData.channel.displayName}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm font-bold text-muted-foreground">
               {streamData.category?.name || "Unknown Category"}
             </p>
-            <p className="text-sm text-muted-foreground">
-              {streamData.currentView} người xem
-            </p>
+            <p className="text-sm text-muted-foreground"></p>
             <p className="text-sm text-muted-foreground">{streamData.id}</p>
           </div>
         </div>

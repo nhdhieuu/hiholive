@@ -13,6 +13,7 @@ import AdminCategoryPage from "@/pages/admin/category/AdminCategoryPage.tsx";
 import AdminStreamPage from "@/pages/admin/stream/AdminStreamPage.tsx";
 import { ForgotPassword } from "@/pages/forgot-password/ForgotPassword.tsx";
 import { CategoryPage } from "@/pages/category/CategoryPage.tsx";
+import { VideoPage } from "@/pages/video/VideoPage.tsx";
 
 export const MainRoute = () => {
   return (
@@ -24,6 +25,7 @@ export const MainRoute = () => {
         <Route path="/" element={<RootLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/streaming/:id" element={<StreamingPage />} />
+          <Route path="/video/:id" element={<VideoPage />} />
           <Route path="/category/:id" element={<CategoryPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/channel/:username" element={<ChannelPage />} />
