@@ -1,53 +1,55 @@
-import React from "react";
-import videojs from "video.js";
-import "video.js/dist/video-js.css";
+import React, { useEffect, useRef } from "react";
+import Hls from "hls.js";
 
-export const VideoJS = (props) => {
-  const videoRef = React.useRef(null);
-  const playerRef = React.useRef(null);
-  const { options, onReady } = props;
+interface HlsPlayerProps {
+  src: string; // URL của video HLS
+  poster?: string; // Hình ảnh hiển thị trước khi phát video
+  width?: string; // Chiều rộng của video
+  height?: string; // Chiều cao của video
+  controls?: boolean; // Hiển thị điều khiển hay không
+}
 
-  React.useEffect(() => {
-    // Make sure Video.js player is only initialized once
-    if (!playerRef.current) {
-      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode.
-      const videoElement = document.createElement("video-js");
+const HlsPlayer: React.FC<HlsPlayerProps> = ({
+  src,
+  poster,
+  width = "100%",
+  height = "auto",
+  controls = true,
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-      videoElement.classList.add("vjs-big-play-centered");
-      videoRef.current.appendChild(videoElement);
+  useEffect(() => {
+    if (Hls.isSupported() && videoRef.current) {
+      const hls = new Hls();
+      hls.loadSource(src);
+      hls.attachMedia(videoRef.current);
 
-      const player = (playerRef.current = videojs(videoElement, options, () => {
-        videojs.log("player is ready");
-        onReady && onReady(player);
-      }));
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        console.log("HLS manifest loaded successfully");
+      });
 
-      // You could update an existing player in the `else` block here
-      // on prop change, for example:
-    } else {
-      const player = playerRef.current;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        console.error(`HLS.js error: ${data.type} - ${data.details}`, data);
+      });
 
-      player.autoplay(options.autoplay);
-      player.src(options.sources);
+      return () => {
+        hls.destroy();
+      };
+    } else if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
+      videoRef.current.src = src;
     }
-  }, [options, videoRef]);
-
-  // Dispose the Video.js player when the functional component unmounts
-  React.useEffect(() => {
-    const player = playerRef.current;
-
-    return () => {
-      if (player && !player.isDisposed()) {
-        player.dispose();
-        playerRef.current = null;
-      }
-    };
-  }, [playerRef]);
+  }, [src]);
 
   return (
-    <div data-vjs-player>
-      <div ref={videoRef} />
-    </div>
+    <video
+      ref={videoRef}
+      poster={poster}
+      controls={controls}
+      style={{ width, height }}
+    />
   );
 };
 
-export default VideoJS;
+export default HlsPlayer;

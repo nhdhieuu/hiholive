@@ -1,14 +1,17 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar.tsx";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { StreamDetailResponseData } from "@/types/streamDetail.ts";
-import VideoJS from "@/components/VideoPlayer.tsx";
 import { getStreamDetail } from "../streaming/api/streamApi";
+import HlsPlayer from "@/components/VideoPlayer.tsx";
 
 export function VideoPage() {
   const [streamDetail, setStreamDetail] =
     useState<StreamDetailResponseData | null>(null);
-  const playerRef = useRef(null);
   const { id } = useParams<{ id: string }>();
   const fetchStreamDetail = async (id: string) => {
     try {
@@ -24,31 +27,6 @@ export function VideoPage() {
       fetchStreamDetail(id);
     }
   }, []);
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    sources: [
-      {
-        src: "https://content.hiholive.fun/ECVJ2XGmF3DHF6Y/master.m3u8",
-        type: "application/x-mpegURL",
-      },
-    ],
-  };
-
-  const handlePlayerReady = (player) => {
-    playerRef.current = player;
-
-    // You can handle player events here, for example:
-    player.on("waiting", () => {
-      videojs.log("player is waiting");
-    });
-
-    player.on("dispose", () => {
-      videojs.log("player will dispose");
-    });
-  };
   const navigate = useNavigate();
   return (
     <div className="max-h-screen">
@@ -58,7 +36,13 @@ export function VideoPage() {
         <div className="flex-1 flex flex-col">
           {/* Video player area */}
           <div className="w-full">
-            <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+            <HlsPlayer
+              src={`https://content.hiholive.fun/${id}/master.m3u8`} // URL của video HLS với id
+              poster="https://placehold.co/600x400?text=Hiholive" // Hình ảnh hiển thị trước khi phát
+              width="100%"
+              height="1080px"
+              controls={true}
+            />
           </div>
 
           {/* Channel info section */}
@@ -68,12 +52,12 @@ export function VideoPage() {
                 {/* Avatar and live indicator */}
                 <div className="relative">
                   <Avatar className="h-16 w-16">
-                    {/*<AvatarImage
+                    <AvatarImage
                       src={
-                        streamDetail?.channel.image.url ||
+                        streamDetail?.channel?.image?.url ||
                         "https://placehold.co/600x400?text=Eduhub"
                       }
-                    />*/}
+                    />
                     <AvatarFallback>CH</AvatarFallback>
                   </Avatar>
                 </div>
