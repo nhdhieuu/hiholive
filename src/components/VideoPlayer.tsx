@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from "react";
 import Hls from "hls.js";
 
 interface HlsPlayerProps {
-  src: string; // URL của video HLS
-  poster?: string; // Hình ảnh hiển thị trước khi phát video
-  width?: string; // Chiều rộng của video
-  height?: string; // Chiều cao của video
-  controls?: boolean; // Hiển thị điều khiển hay không
+  src: string;
+  poster?: string;
+  width?: string;
+  height?: string;
+  controls?: boolean;
 }
 
 const HlsPlayer: React.FC<HlsPlayerProps> = ({
@@ -26,6 +26,15 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({
 
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         console.log("HLS manifest loaded successfully");
+        // Auto play when manifest is loaded
+        videoRef.current
+          ?.play()
+          .then(() => {
+            videoRef.current!.currentTime = 0;
+          })
+          .catch((error) => {
+            console.warn("Auto-play failed:", error);
+          });
       });
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -39,6 +48,15 @@ const HlsPlayer: React.FC<HlsPlayerProps> = ({
       };
     } else if (videoRef.current?.canPlayType("application/vnd.apple.mpegurl")) {
       videoRef.current.src = src;
+      // Handle native HLS playback
+      videoRef.current
+        .play()
+        .then(() => {
+          videoRef.current!.currentTime = 0;
+        })
+        .catch((error) => {
+          console.warn("Auto-play failed:", error);
+        });
     }
   }, [src]);
 

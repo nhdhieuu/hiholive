@@ -83,7 +83,8 @@ export default function SearchPage() {
     <div className="min-h-screen bg-background text-foreground p-4 space-y-6">
       {searchResults.length === 0 &&
       channelResults.length === 0 &&
-      categoryResults.length === 0 ? (
+      categoryResults.length === 0 &&
+      videoResults.length === 0 ? (
         <div>
           Không tìm thấy kết quả nào cho {search}. Đảm bảo rằng bạn không viết
           sai chính tả từ nào hoặc bạn hãy thử từ khóa khác.

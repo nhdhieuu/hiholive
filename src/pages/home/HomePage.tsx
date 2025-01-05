@@ -100,7 +100,7 @@ export default function HomePage() {
             ))}
           </div>
         )}
-        {streams.length > 5 && (
+        {previousStream.length > 5 && (
           <ShowMoreDivider
             onShowMore={handleShowMoreSection2}
             isShowMore={isShowMoreSection2}
