@@ -41,9 +41,14 @@ export default function ChannelPage() {
   useEffect(() => {
     if (username) {
       fetchChannel(username);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    if (channel?.id) {
       fetchStreams();
     }
-  }, []);
+  }, [channel?.id]);
 
   return (
     <div>
@@ -68,11 +73,17 @@ export default function ChannelPage() {
           <h1 className={"text-2xl font-bold"}>
             Các luồng trực tiếp trước đây
           </h1>
-          <div className="grid grid-cols-5 gap-4">
-            {previousStream.slice(0, 5).map((stream) => (
-              <HomeVideoCard streamData={stream} key={stream.id} />
-            ))}
-          </div>
+          {previousStream.length === 0 ? (
+            <div className={"h-[200px] flex items-center justify-center"}>
+              Chưa có sự kiện trực tiếp nào
+            </div>
+          ) : (
+            <div className="grid grid-cols-5 gap-4">
+              {previousStream.slice(0, 5).map((stream) => (
+                <HomeVideoCard streamData={stream} key={stream.id} />
+              ))}
+            </div>
+          )}
           {isShowMoreSection2 && (
             <div className="grid grid-cols-5 gap-4">
               {previousStream.slice(5, 11).map((stream) => (

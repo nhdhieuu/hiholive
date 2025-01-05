@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button.tsx";
-import { Globe, LogOut, Mail, Settings, Tv, User, Video } from "lucide-react";
+import { LogOut, Mail, Settings, Tv, User, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -135,10 +135,10 @@ export const TopBar = () => {
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Cài đặt tài khoản</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  {/*<DropdownMenuItem>
                     <Globe className="mr-2 h-4 w-4" />
                     <span>Ngôn ngữ</span>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem>*/}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onSelect={handlelogout}
