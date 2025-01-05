@@ -1,13 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Category } from "@/types/category.ts";
+import { useNavigate } from "react-router-dom";
 
 interface CategoryCardProps {
   category: Category;
 }
 
 export default function CategoryCard({ category }: CategoryCardProps) {
+  const navigate = useNavigate();
   return (
-    <Card className="w-[250px] overflow-hidden hover:bg-gray-50">
+    <Card
+      className="w-[250px] overflow-hidden hover:bg-gray-50"
+      onClick={() => navigate(`/category/${category.id}`)}
+    >
       <div className="relative aspect-[16/9] h-[140px]">
         <img
           src={category.image.url}
