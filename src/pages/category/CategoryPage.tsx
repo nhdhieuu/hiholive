@@ -32,8 +32,10 @@ export const CategoryPage = () => {
   };
   const fetchCategoryData = async () => {
     try {
-      const response = await getCategory();
-      setCategory(response.data);
+      if (id) {
+        const response = await getCategory(id);
+        setCategory(response.data);
+      }
     } catch (error) {
       console.error("Fetch category data error:", error);
     }
@@ -47,25 +49,33 @@ export const CategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4 space-y-6">
-      {categoryLive.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold">
-            Các kênh trực tiếp thuộc thể loại {category?.name}
-          </h2>
-          {categoryLive.slice(0, 5).map((stream) => (
-            <SearchPreviousVideo key={stream.id} data={stream} />
-          ))}
-        </section>
-      )}
-      {categoryVideo.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold">
-            Video trước đây thuộc thể loại {category?.name}
-          </h2>
-          {categoryVideo.slice(0, 5).map((stream) => (
-            <SearchPreviousVideo key={stream.id} data={stream} />
-          ))}
-        </section>
+      {categoryLive.length === 0 && categoryVideo.length === 0 ? (
+        <div>
+          <h1 className="text-2xl font-bold">Không tìm thấy kết quả</h1>
+        </div>
+      ) : (
+        <>
+          {categoryLive.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">
+                Các kênh trực tiếp thuộc thể loại {category?.name}
+              </h2>
+              {categoryLive.slice(0, 5).map((stream) => (
+                <SearchPreviousVideo key={stream.id} data={stream} />
+              ))}
+            </section>
+          )}
+          {categoryVideo.length > 0 && (
+            <section className="space-y-4">
+              <h2 className="text-lg font-semibold">
+                Video trước đây thuộc thể loại {category?.name}
+              </h2>
+              {categoryVideo.slice(0, 5).map((stream) => (
+                <SearchPreviousVideo key={stream.id} data={stream} />
+              ))}
+            </section>
+          )}
+        </>
       )}
     </div>
   );
