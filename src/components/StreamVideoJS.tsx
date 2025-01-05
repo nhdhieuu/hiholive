@@ -23,6 +23,9 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
       const videoElement = videoRef.current;
       if (!videoElement) return;
 
+      // Set fixed ID for video element
+      videoElement.id = "vjs_video_5452";
+
       const Plugin = videojs.getPlugin("plugin");
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
@@ -144,14 +147,42 @@ const StreamVideoJS = ({ sources }: StreamVideoJSProps) => {
         responsive: true,
         liveui: true,
         liveTracker: true,
-        autoplay: true, // Added autoplay option
+        autoplay: true,
+        userActions: {
+          hotkeys: true,
+        },
+        playbackRates: [0.5, 1, 1.5, 2],
         plugins: {
           qualitySelector: {
             sources: sources,
           },
         },
+        controlBar: {
+          children: [
+            "playToggle",
+            "volumePanel",
+            "currentTimeDisplay",
+            "timeDivider",
+            "durationDisplay",
+            "progressControl",
+            "liveDisplay",
+            "seekToLive",
+            "remainingTimeDisplay",
+            "customControlSpacer",
+            "playbackRateMenuButton",
+            "chaptersButton",
+            "descriptionsButton",
+            "subsCapsButton",
+            "audioTrackButton",
+            "fullscreenToggle",
+          ],
+          volumePanel: {
+            inline: false,
+          },
+        },
       });
 
+      // Set initial source
       playerRef.current.src({
         src: sources[0].src,
         type: sources[0].type,

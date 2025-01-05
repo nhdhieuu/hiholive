@@ -83,6 +83,7 @@ export default function StreamingPage() {
               onReady={handlePlayerReady}
             />*/}
             <StreamVideoJS sources={videoSources} />
+            {/*<TestVideoPlayer id={id} />*/}
           </div>
 
           {/* Channel info section */}
