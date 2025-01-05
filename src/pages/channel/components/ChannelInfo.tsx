@@ -21,7 +21,9 @@ export default function ChannelInfo({ channel }: ChannelInfoProps) {
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">{channel?.displayName}</h1>
+            <h1 className="text-2xl font-bold text-white drop-shadow-lg">
+              {channel?.displayName}
+            </h1>
           </div>
           <p className="mt-4 text-gray-300">
             {channel?.description || "Kênh này chưa cập nhật mô tả."}
