@@ -17,7 +17,13 @@ export default function StreamingPage() {
   const { id } = useParams<{ id: string }>();
   const [streamDetail, setStreamDetail] =
     useState<StreamDetailResponseData | null>(null);
-
+  const [videoSources, setVideoSources] = useState([
+    {
+      src: `https://content.hiholive.fun/${id}/master.m3u8`,
+      type: "application/x-mpegURL",
+      label: "auto",
+    },
+  ]);
   const fetchStreamDetail = async (id: string) => {
     try {
       const data = await getStreamDetail(id);
@@ -29,15 +35,15 @@ export default function StreamingPage() {
     }
   };
 
-  /*fetch(`https://content.hiholive.fun/${id}/master.m3u8`).then(async (r) => {
+  fetch(`https://content.hiholive.fun/${id}/master.m3u8`).then(async (r) => {
     const data = await r.text();
     data.split("\n").forEach((r) => {
       if (r.startsWith("index-")) {
         console.log(r);
       }
     });
-  });*/
-  const videoSources = [
+  });
+  /*const videoSources = [
     {
       src: `https://content.hiholive.fun/${id}/master.m3u8`,
       type: "application/x-mpegURL",
@@ -53,12 +59,35 @@ export default function StreamingPage() {
       type: "application/x-mpegURL",
       label: "720",
     },
-  ];
+  ];*/
   useEffect(() => {
     if (id) {
       fetchStreamDetail(id);
+      fetch(`https://content.hiholive.fun/${id}/master.m3u8`).then(
+        async (r) => {
+          const data = await r.text();
+          const sources = [
+            {
+              src: `https://content.hiholive.fun/${id}/master.m3u8`,
+              type: "application/x-mpegURL",
+              label: "auto",
+            },
+          ];
+          data.split("\n").forEach((line) => {
+            if (line.startsWith("index-")) {
+              const label = line.match(/index-(\d+p\d+)/)?.[1] || "unknown";
+              sources.push({
+                src: `https://content.hiholive.fun/${id}/${line}`,
+                type: "application/x-mpegURL",
+                label,
+              });
+            }
+          });
+          setVideoSources(sources);
+        },
+      );
     }
-  }, []);
+  }, [id]);
   useEffect(() => {
     if (socket) {
       socket.emit("stream:view", id, (data: unknown) => {
