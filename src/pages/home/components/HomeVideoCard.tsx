@@ -74,7 +74,6 @@ export default function HomeVideoCard({ streamData }: HomeVideoCardProps) {
               {streamData.category?.name || "Unknown Category"}
             </p>
             <p className="text-sm text-muted-foreground"></p>
-            <p className="text-sm text-muted-foreground">{streamData.id}</p>
           </div>
         </div>
       </CardContent>
