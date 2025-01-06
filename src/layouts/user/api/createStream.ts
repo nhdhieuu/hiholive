@@ -4,6 +4,7 @@ export interface CreateStreamRequest {
   title: string;
   description: string;
   notification: string;
+  categoryId: string;
   isRerun: boolean;
   scheduledStartTime: Date;
 }

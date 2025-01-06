@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { DatePickerComponent } from "@/components/DatePickerComponent.tsx";
 import {
@@ -16,6 +16,23 @@ import {
   CreateStreamRequest,
 } from "@/layouts/user/api/createStream.ts";
 import { StreamInfoModal } from "@/layouts/user/components/StreamInfoModal.tsx";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Category } from "@/types/category.ts";
+import { getCategory } from "@/pages/home/api/homeApi.ts";
+import { cn } from "@/lib/utils.ts";
 
 interface StreamDialogProps {
   isOpen: boolean;
@@ -30,14 +47,22 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
   const [isRerun, setIsRerun] = useState<boolean>(false);
   const [streamKey, setStreamKey] = useState<string>("");
   const [rtmpLink, setRtmpLink] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const [showStreamInfoModal, setShowStreamInfoModal] =
     useState<boolean>(false);
+
   async function onSubmitCreateStream() {
     try {
       const payload: CreateStreamRequest = {
         title: title,
         description: description,
         notification: notification,
+        categoryId: selectedCategory?.id || "",
         scheduledStartTime: new Date(), // Thay đổi điều này theo DatePickerComponent
         isRerun: isRerun,
       };
@@ -56,13 +81,28 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
     }
   }
 
+  const fetchCategories = async () => {
+    try {
+      // Fetch categories
+      const response = await getCategory();
+      console.log("categories Data:", response.data);
+      setCategories(response.data || []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[600px]">
           <div className="grid gap-6 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">Tiêu đề</Label>
               <div className="relative">
                 <Input
                   id="title"
@@ -78,7 +118,7 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Mô tả</Label>
               <div className="relative">
                 <Input
                   id="title"
@@ -94,7 +134,54 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="notification">Go Live Notification</Label>
+              <Label htmlFor="category">Danh mục</Label>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="justify-between"
+                  >
+                    {selectedCategory
+                      ? selectedCategory.name
+                      : "Select category..."}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search category..." />
+                    <CommandList>
+                      <CommandEmpty>No category found.</CommandEmpty>
+                      <CommandGroup>
+                        {categories.map((category) => (
+                          <CommandItem
+                            key={category.id}
+                            onSelect={() => {
+                              setSelectedCategory(category);
+                              setOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                selectedCategory?.id === category.id
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {category.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="notification">Thông báo</Label>
               <div className="relative">
                 <Input
                   id="notification"
@@ -110,7 +197,7 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
             </div>
 
             <div className="grid gap-2">
-              <Label>Schedule</Label>
+              <Label>Lên lịch</Label>
               <div className="relative">
                 <DatePickerComponent />
               </div>
@@ -122,18 +209,13 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
                 checked={isRerun}
                 onCheckedChange={(checked) => setIsRerun(checked as boolean)}
               />
-              <div className="grid gap-1.5 leading-none">
+              <div className="grid gap-1.5 leading-none item-center">
                 <label
                   htmlFor="rerun"
                   className="text-sm font-medium leading-none"
                 >
-                  Rerun
+                  Phát lại
                 </label>
-
-                <p className="text-sm text-muted-foreground">
-                  Let viewers know your stream was previously recorded. Failure
-                  to label Reruns leads to viewer confusion which damages trust.
-                </p>
               </div>
             </div>
           </div>
