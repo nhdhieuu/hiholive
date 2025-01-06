@@ -87,11 +87,8 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
   const handleSend = () => {
     if (token) {
       if (newMessage.trim()) {
-        const currentTime = new Date().toLocaleTimeString("en-US", {
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        const currentTime = new Date().toISOString();
+
         if (socket) {
           socket.emit("chat:create", newMessage, (data: unknown) => {
             console.log("Sent message:", data);
