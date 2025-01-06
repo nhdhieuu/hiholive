@@ -10,3 +10,8 @@ export interface Category {
   status: number;
   totalContent: number;
 }
+export interface CreateCategory {
+  name: string;
+  description: string;
+  image?: Image;
+}

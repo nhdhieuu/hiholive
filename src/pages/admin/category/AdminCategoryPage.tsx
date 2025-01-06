@@ -19,12 +19,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronUp, MoreHorizontal, Plus } from "lucide-react";
 import { Category } from "@/types/category";
-import { getCategories } from "@/pages/admin/category/api/adminCategoryApi.ts";
+import {
+  deleteCategory,
+  getCategories,
+} from "@/pages/admin/category/api/adminCategoryApi.ts";
+import { NewCategoryModal } from "@/pages/admin/category/component/NewCategoryModal.tsx";
+import { toast } from "react-toastify";
 
 export default function AdminCategoryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [paging, setPaging] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Category;
     direction: "asc" | "desc";
@@ -85,6 +91,12 @@ export default function AdminCategoryPage() {
 
   return (
     <div className="container px-2 py-2">
+      <NewCategoryModal
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        refreshData={fetchCategories}
+      />
+
       <h1 className="text-2xl font-bold mb-5">Admin Category Management</h1>
       <div className="flex justify-between items-center mb-4">
         <Input
@@ -93,7 +105,7 @@ export default function AdminCategoryPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
-        <Button>
+        <Button onClick={() => setIsOpen(true)}>
           <Plus className="mr-2 h-4 w-4" /> Create New Category
         </Button>
       </div>
@@ -166,9 +178,34 @@ export default function AdminCategoryPage() {
                       Copy category ID
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Edit category</DropdownMenuItem>
-                    <DropdownMenuItem>View content</DropdownMenuItem>
-                    <DropdownMenuItem>Delete category</DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      onClick={async () => {
+                        try {
+                          await deleteCategory(category.id);
+                          toast.success("Xóa danh mục thành công!", {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                          });
+                        } catch (error) {
+                          console.error("Failed to delete category:", error);
+                          toast.error("Xóa danh mục thất bại!", {
+                            position: "top-right",
+                            autoClose: 3000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                          });
+                        }
+                      }}
+                    >
+                      Delete category
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

@@ -1,6 +1,6 @@
 import { Paging } from "@/types/paging.ts";
 import axiosInstance from "@/axiosSetup.ts";
-import { Category } from "@/types/category.ts";
+import { Category, CreateCategory } from "@/types/category.ts";
 
 interface AdminCategoryResponse {
   data: Category[];
@@ -18,6 +18,43 @@ export async function getCategories(
           page,
         },
       },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw error;
+  }
+}
+
+interface CreateCategoryResponse {
+  data: boolean;
+}
+
+export async function createCategory(
+  body: CreateCategory,
+): Promise<CreateCategoryResponse> {
+  try {
+    const response = await axiosInstance.post<CreateCategoryResponse>(
+      "/v1/category/",
+      body,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    throw error;
+  }
+}
+
+interface DeleteCategoryResponse {
+  data: boolean;
+}
+
+export async function deleteCategory(
+  categoryId: string,
+): Promise<DeleteCategoryResponse> {
+  try {
+    const response = await axiosInstance.delete<DeleteCategoryResponse>(
+      `/v1/category/${categoryId}`,
     );
     return response.data;
   } catch (error) {
