@@ -58,7 +58,6 @@ export function ChannelSettingModal({
             pauseOnHover: true,
             draggable: true,
           });
-          onOpenChange(false);
         }
       } catch (error) {
         console.error("Image upload failed:", error);
@@ -92,6 +91,7 @@ export function ChannelSettingModal({
           pauseOnHover: true,
           draggable: true,
         });
+        onOpenChange(false);
       }
     } catch (error) {
       console.error("Update profile failed:", error);

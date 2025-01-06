@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "video.js/dist/video-js.css";
 import { Stream } from "@/types/stream.ts";
-import VideoJSPlayer from "@/components/VideoJSPlayer.tsx";
+import HlsPlayer from "@/components/VideoPlayer.tsx";
 
 interface HomeVideoCardProps {
   streamData: Stream;
@@ -17,29 +17,6 @@ export default function HomeVideoCard({ streamData }: HomeVideoCardProps) {
   /*const videoRef = useRef<HTMLVideoElement>(null);
     const playerRef = useRef<Player | null>(null);*/
 
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    muted: true,
-    sources: [
-      {
-        src: `https://content.hiholive.fun/${streamData.id}/master.m3u8`,
-        type: "application/x-mpegURL",
-      },
-    ],
-    controlBar: {
-      progressControl: false, // You can customize controlBar properties
-      remainingTimeDisplay: false,
-      durationDisplay: false,
-      currentTimeDisplay: false,
-      pictureInPictureToggle: false,
-      volumePanel: false,
-      playToggle: false,
-      fullscreenToggle: false,
-    },
-  };
   return (
     <Card
       className="w-full overflow-hidden bg-background hover:bg-gray-50"
@@ -57,7 +34,12 @@ export default function HomeVideoCard({ streamData }: HomeVideoCardProps) {
         </div>
         {isHovered ? (
           <div className="absolute inset-0">
-            <VideoJSPlayer options={videoJsOptions}></VideoJSPlayer>
+            <HlsPlayer
+              src={`https://content.hiholive.fun/${streamData.id}/master.m3u8`} // URL của video HLS với id
+              poster="https://placehold.co/600x400?text=Hiholive"
+              height="100%"
+              controls={false}
+            />
           </div>
         ) : (
           <div
