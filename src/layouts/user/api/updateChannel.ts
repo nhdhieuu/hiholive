@@ -10,7 +10,7 @@ interface GetChannelResponse {
 }
 
 export const updateChannel = async (
-  channelId: number,
+  channelId: string,
   body: UpdateChannel,
 ): Promise<UpdateChannelResponse> => {
   try {

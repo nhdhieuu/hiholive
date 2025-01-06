@@ -7,11 +7,13 @@ import { useEffect, useState } from "react";
 import { Stream } from "@/types/stream.ts";
 import SearchPreviousVideo from "@/pages/search/components/SearchPreviousVideo.tsx";
 import { Category } from "@/types/category.ts";
+import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
 
 export const CategoryPage = () => {
   const { id } = useParams<{ id: string }>();
   const [categoryLive, setCategoryLive] = useState<Stream[]>([]);
   const [categoryVideo, setCategoryVideo] = useState<Stream[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState<Category>();
   const fetchCategory = async () => {
     try {
@@ -26,6 +28,7 @@ export const CategoryPage = () => {
         state: "ended",
       });
       setCategoryVideo(video.data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Fetch category error:", error);
     }
@@ -35,6 +38,7 @@ export const CategoryPage = () => {
       if (id) {
         const response = await getCategory(id);
         setCategory(response.data);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Fetch category data error:", error);
@@ -46,6 +50,10 @@ export const CategoryPage = () => {
       fetchCategory();
     }
   }, []);
+
+  if (isLoading) {
+    return <LoadingAnimation />;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4 space-y-6">

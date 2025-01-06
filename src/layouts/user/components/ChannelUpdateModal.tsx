@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import { uploadImg } from "../api/uploadImgApi";
 import { toast } from "react-toastify";
 import { useUserProfile } from "@/stores/useUserProfile.ts";
-import { getChannel } from "../api/updateChannel";
-import { Channel } from "@/types/channel.ts";
+import { getChannel, updateChannel } from "../api/updateChannel";
+import { Channel, UpdateChannel } from "@/types/channel.ts";
 
 interface ChannelUpdateModalProps {
   open: boolean;
@@ -29,6 +29,7 @@ export function ChannelUpdateModal({
   const [avatar, setAvatar] = useState<string>("/placeholder.svg");
   const { userProfile } = useUserProfile();
   const [updateChannelRequest, setUpdateChannelRequest] = useState<Channel>();
+  const [updateChannelBody, setUpdateChannelBody] = useState<UpdateChannel>();
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -38,6 +39,10 @@ export function ChannelUpdateModal({
         const response = await uploadImg(file);
         if (response) {
           setAvatar(response.data.url);
+          setUpdateChannelBody((prevState) => ({
+            ...prevState,
+            panel: response.data,
+          }));
           toast.success("Cập nhật ảnh bìa thành công!", {
             position: "top-right",
             autoClose: 3000,
@@ -62,6 +67,11 @@ export function ChannelUpdateModal({
   };
   const handleClick = async () => {
     try {
+      const response = await updateChannel(
+        updateChannelRequest?.id || "",
+        updateChannelBody || {},
+      );
+      console.log("Update channel response:", response);
       toast.success("Cập nhật thông tin thành công!", {
         position: "top-right",
         autoClose: 3000,
@@ -147,6 +157,10 @@ export function ChannelUpdateModal({
               maxLength={300}
               onChange={(e) => {
                 console.log(e.target.value);
+                setUpdateChannelBody((prevState) => ({
+                  ...prevState,
+                  description: e.target.value,
+                }));
               }}
             />
             <p className="text-xs text-muted-foreground">
@@ -164,6 +178,10 @@ export function ChannelUpdateModal({
               placeholder="Nhập thông tin liên hệ"
               onChange={(e) => {
                 console.log(e.target.value);
+                setUpdateChannelBody((prevState) => ({
+                  ...prevState,
+                  contact: e.target.value,
+                }));
               }}
             />
           </div>
