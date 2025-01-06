@@ -42,7 +42,7 @@ interface StreamDialogProps {
 
 export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
   const [title, setTitle] = useState("");
-  const [notification, setNotification] = useState("nhdhieuu went live!");
+  const [notification, setNotification] = useState("");
   const [description, setDescription] = useState("");
   const [isRerun, setIsRerun] = useState<boolean>(false);
   const [streamKey, setStreamKey] = useState<string>("");
@@ -110,7 +110,7 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
                   onChange={(e) => setTitle(e.target.value)}
                   maxLength={140}
                   className="pr-16"
-                  placeholder="123"
+                  placeholder="Nhập tiêu đề..."
                 />
                 <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">
                   {title.length}/140
@@ -126,7 +126,7 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
                   onChange={(e) => setDescription(e.target.value)}
                   maxLength={140}
                   className="pr-16"
-                  placeholder="123"
+                  placeholder="Nhập mô tả..."
                 />
                 <span className="absolute right-3 top-2.5 text-sm text-muted-foreground">
                   {title.length}/140
@@ -185,6 +185,7 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
               <div className="relative">
                 <Input
                   id="notification"
+                  placeholder={"Nhập thông báo..."}
                   value={notification}
                   onChange={(e) => setNotification(e.target.value)}
                   maxLength={140}

@@ -27,7 +27,7 @@ export function DatePickerComponent() {
           )}
         >
           <CalendarIcon />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : <span>Chọn ngày</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
