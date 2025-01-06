@@ -177,14 +177,14 @@ export const TopBar = () => {
                   navigate("/login");
                 }}
               >
-                Log in
+                Đăng nhập
               </Button>
               <Button
                 onClick={() => {
                   navigate("/signup");
                 }}
               >
-                Sign Up
+                Đăng ký
               </Button>
             </div>
           )}
