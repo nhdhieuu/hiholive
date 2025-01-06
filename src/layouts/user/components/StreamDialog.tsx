@@ -145,7 +145,7 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
                   >
                     {selectedCategory
                       ? selectedCategory.name
-                      : "Select category..."}
+                      : "Chọn danh mục..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -229,14 +229,14 @@ export function StreamDialog({ isOpen, onOpenChange }: StreamDialogProps) {
                 console.log(open);
               }}
             >
-              Cancel
+              Hủy bỏ
             </Button>
             <Button
               type="submit"
               onClick={onSubmitCreateStream}
               className="bg-[#9333EA] hover:bg-[#7E22CE]"
             >
-              Done
+              Hoàn tất
             </Button>
           </DialogFooter>
         </DialogContent>

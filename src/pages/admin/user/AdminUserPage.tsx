@@ -102,7 +102,6 @@ export function AdminUserPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
-        <Button>Add New User</Button>
       </div>
       <Table>
         <TableHeader>

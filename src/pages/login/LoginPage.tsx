@@ -139,7 +139,7 @@ export default function LoginPage() {
             </Link>
             {/* Submit Button */}
             <Button className={"w-full"} type="submit">
-              Submit
+              Đăng nhập
             </Button>
           </form>
         </Form>

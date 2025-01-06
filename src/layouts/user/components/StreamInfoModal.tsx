@@ -86,7 +86,7 @@ export function StreamInfoModal({
 
         <DialogFooter>
           <Button variant="secondary" onClick={() => onOpenChange(false)}>
-            Close
+            Trở về
           </Button>
         </DialogFooter>
       </DialogContent>

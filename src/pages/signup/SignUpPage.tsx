@@ -163,7 +163,7 @@ export const SignUpPage = () => {
 
             {/* Submit Button */}
             <Button className={"w-full"} type="submit">
-              Submit
+              Đăng ký
             </Button>
           </form>
         </Form>

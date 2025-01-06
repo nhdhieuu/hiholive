@@ -80,7 +80,11 @@ export const TopBar = () => {
                   <div
                     className="flex items-center gap-2 p-2 hover:bg-gray-50"
                     onClick={() => {
-                      navigate(`/channel/${userProfile?.user_name}`);
+                      if (userProfile?.SystemRole === "viewer") {
+                        setShowChannelDialog(true);
+                      } else {
+                        navigate(`/channel/${userProfile?.user_name}`);
+                      }
                     }}
                   >
                     <Avatar>
