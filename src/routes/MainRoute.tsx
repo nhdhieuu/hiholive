@@ -14,6 +14,7 @@ import AdminStreamPage from "@/pages/admin/stream/AdminStreamPage.tsx";
 import { ForgotPassword } from "@/pages/forgot-password/ForgotPassword.tsx";
 import { CategoryPage } from "@/pages/category/CategoryPage.tsx";
 import { VideoPage } from "@/pages/video/VideoPage.tsx";
+import PrivateRoute from "./PrivateRoute";
 
 export const MainRoute = () => {
   return (
@@ -30,11 +31,15 @@ export const MainRoute = () => {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/channel/:username" element={<ChannelPage />} />
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
-          {/* This is the root of the admin path */}
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <AdminLayout />
+            </PrivateRoute>
+          }
+        >
           <Route index element={<AdminStreamPage />} />
-
-          {/* Admin Sidebar with different routes */}
           <Route path="users" element={<AdminUserPage />} />
           <Route path="categories" element={<AdminCategoryPage />} />
           <Route path="settings" element={<AdminSettingPage />} />
