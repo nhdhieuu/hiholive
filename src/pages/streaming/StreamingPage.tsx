@@ -43,23 +43,6 @@ export default function StreamingPage() {
       }
     });
   });
-  /*const videoSources = [
-    {
-      src: `https://content.hiholive.fun/${id}/master.m3u8`,
-      type: "application/x-mpegURL",
-      label: "auto",
-    },
-    {
-      src: `https://content.hiholive.fun/${id}/index-1080p60.m3u8`,
-      type: "application/x-mpegURL",
-      label: "1080",
-    },
-    {
-      src: `https://content.hiholive.fun/${id}/index-720p60.m3u8`,
-      type: "application/x-mpegURL",
-      label: "720",
-    },
-  ];*/
   useEffect(() => {
     if (id) {
       fetchStreamDetail(id);

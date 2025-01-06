@@ -69,6 +69,12 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
 
   useEffect(() => {
     fetchChatData();
+    if (socket) {
+      socket.on("newMessage", (data: MessageResponse) => {
+        console.log("newMessage", data);
+        setMessages((prevMessages) => [...prevMessages, data]);
+      });
+    }
     return () => {
       if (socket) {
         socket.emit("stream:leave", streamId, (data: unknown) => {
@@ -76,7 +82,7 @@ export function ChatSidebar({ streamId }: ChatSidebarProps) {
         });
       }
     };
-  }, []);
+  }, [socket, streamId]);
 
   const handleSend = () => {
     if (token) {
