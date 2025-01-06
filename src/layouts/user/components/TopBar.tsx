@@ -61,6 +61,18 @@ export const TopBar = () => {
         <SearchBar></SearchBar>
         {/*<CommandSearch commands={commands} />*/}
         <div className={"flex space-x-5 items-center"}>
+          {userProfile?.SystemRole === "admin" && (
+            <div className="flex items-center space-x-2">
+              <Button
+                className="px-4 py-2"
+                onClick={() => {
+                  navigate("/admin");
+                }}
+              >
+                Quản lý
+              </Button>
+            </div>
+          )}
           <button className={"hover:bg-accent p-1 rounded-md"}>
             <Mail size={32} />
           </button>
