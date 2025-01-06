@@ -33,6 +33,7 @@ export function ForgotPassword() {
       console.log(response);
       toast.success("Gửi thành công! Vui lòng kiểm tra email của bạn.");
     } catch (err) {
+      console.log(err);
       setError("Failed to send reset email. Please try again.");
       toast.error("Gửi thất bại! Vui lòng thử lại.");
     }
@@ -45,6 +46,8 @@ export function ForgotPassword() {
       setIsPinTrue(true);
       toast.success("PIN hợp lệ. Vui lòng đặt mật khẩu mới.");
     } catch (err) {
+      console.log(err);
+
       setError("Failed to check PIN. Please try again.");
       toast.error("PIN không hợp lệ. Vui lòng thử lại.");
     }
@@ -69,6 +72,8 @@ export function ForgotPassword() {
       toast.success("Đặt lại mật khẩu thành công!");
       navigate("/login");
     } catch (err) {
+      console.log(err);
+
       setError("Failed to reset password. Please try again.");
       toast.error("Đặt lại mật khẩu thất bại! Vui lòng thử lại.");
     }
