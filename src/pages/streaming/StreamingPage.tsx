@@ -8,6 +8,7 @@ import { getStreamDetail } from "./api/streamApi";
 import { LoadingAnimation } from "@/components/LoadingAnimation.tsx";
 import { ViewCount } from "./components/ViewCount";
 import StreamVideoJS from "@/components/StreamVideoJS.tsx";
+import { toast } from "react-toastify";
 
 export default function StreamingPage() {
   const navigate = useNavigate();
@@ -75,6 +76,11 @@ export default function StreamingPage() {
     if (socket) {
       socket.emit("stream:view", id, (data: unknown) => {
         console.log("Join Streamchat successfully", data);
+      });
+
+      socket.on("stream:end", (data: unknown) => {
+        console.log("stream:end", data);
+        toast("Buổi trực tiếp đã kết thúc!");
       });
     }
   }, [socket, id]);
@@ -151,9 +157,6 @@ export default function StreamingPage() {
               <h2 className="text-lg font-semibold mb-4">
                 Giới thiệu {streamDetail?.channel?.displayName}
               </h2>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium">2.6K followers</span>
-              </div>
               <p className="text-sm  mb-4">
                 Cao Hoàng is a professional League of Legends player from
                 Vietnam. He is currently playing for T1 in the LCK.
