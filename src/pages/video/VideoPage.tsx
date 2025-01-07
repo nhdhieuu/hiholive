@@ -89,8 +89,9 @@ export function VideoPage() {
                 Giới thiệu {streamDetail?.channel?.displayName}
               </h2>
               <p className="text-sm  mb-4">
-                Cao Hoàng is a professional League of Legends player from
-                Vietnam. He is currently playing for T1 in the LCK.
+                {streamDetail?.channel?.displayName} is a professional League of
+                Legends player from Vietnam. He is currently playing for T1 in
+                the LCK.
               </p>
             </div>
           </div>
