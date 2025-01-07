@@ -6,7 +6,9 @@ interface AdminSettingResponse {
   data: Setting[];
   paging: Paging;
 }
-
+interface AdminSettingUpdateResponse {
+  data: boolean;
+}
 export async function getAdminSetting(
   page: number,
 ): Promise<AdminSettingResponse> {
@@ -22,6 +24,24 @@ export async function getAdminSetting(
     return response.data;
   } catch (error) {
     console.error("Fetch error:", error);
+    throw error;
+  }
+}
+
+export async function updateAdminSetting(
+  name: string,
+  value: string,
+): Promise<AdminSettingUpdateResponse> {
+  try {
+    const response = await axiosInstance.patch<AdminSettingUpdateResponse>(
+      `/v1/setting/${name}`,
+      {
+        value,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Update error:", error);
     throw error;
   }
 }

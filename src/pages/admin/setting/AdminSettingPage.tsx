@@ -12,11 +12,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Setting } from "@/types/setting";
 import { getAdminSetting } from "@/pages/admin/setting/api/adminSettingApi.ts";
+import { SettingValueModal } from "@/pages/admin/setting/component/SettingValueModal.tsx";
 
 export function AdminSettingPage() {
   const [paging, setPaging] = useState(1);
   const [settings, setSettings] = useState<Setting[]>([]);
-  const [expandedRows, setExpandedRows] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [currentSetting, setCurrentSetting] = useState<Setting>();
 
   async function fetchSettingData() {
     try {
@@ -32,19 +34,15 @@ export function AdminSettingPage() {
     fetchSettingData();
   }, [paging]);
 
-  const toggleRowExpansion = (id: string) => {
-    setExpandedRows((prev) =>
-      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id],
-    );
-  };
-
-  const formatValue = (value: object): string => {
-    return JSON.stringify(value, null, 2);
-  };
-
   return (
     <div className="container px-2 py-2">
       <h1 className="text-2xl font-bold mb-5">Admin Setting Page</h1>
+      <SettingValueModal
+        isOpen={isOpen}
+        onClose={setIsOpen}
+        setting={currentSetting}
+        refreshData={fetchSettingData}
+      />
       <Table>
         <TableHeader>
           <TableRow>
@@ -54,7 +52,6 @@ export function AdminSettingPage() {
             <TableHead>Created At</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -66,36 +63,21 @@ export function AdminSettingPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => toggleRowExpansion(item.id)}
+                  onClick={() => {
+                    setCurrentSetting(item);
+                    setIsOpen(true);
+                  }}
                 >
-                  {expandedRows.includes(item.id) ? "Collapse" : "Expand"}
+                  Open
                 </Button>
               </TableCell>
               <TableCell>{new Date(item.createdAt).toLocaleString()}</TableCell>
               <TableCell>{new Date(item.updatedAt).toLocaleString()}</TableCell>
               <TableCell>{item.status === 1 ? "Active" : "Inactive"}</TableCell>
-              <TableCell>
-                <Button variant="outline" size="sm">
-                  Edit
-                </Button>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {settings.map(
-        (item) =>
-          expandedRows.includes(item.id) && (
-            <div
-              key={`expanded-${item.id}`}
-              className="mt-2 p-4 bg-gray-100 rounded"
-            >
-              <pre className="whitespace-pre-wrap">
-                {formatValue(item.value)}
-              </pre>
-            </div>
-          ),
-      )}
       <div className="flex justify-between items-center mt-4">
         <Button
           onClick={() => setPaging((prev) => Math.max(prev - 1, 1))}
